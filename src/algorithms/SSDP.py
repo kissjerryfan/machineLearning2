@@ -1,7 +1,7 @@
 from src.algorithms.singleObject.CoDE import CoDE
 from src.algorithms.singleObject.CoDE_toZero import CoDE_toZero
 from src.algorithms.singleObject.CoDE_10p_lr_toZero import CoDE_10p_lr_toZero
-from src.algorithms.singleObject.CoDE_20p_lr_toZero import  CoDE_20p_lr_toZero
+from src.algorithms.singleObject.CoDE_20p_lr_toZero import CoDE_20p_lr_toZero
 from src.algorithms.singleObject.CoDE_10p_toZero import CoDE_10p_toZero
 from src.algorithms.singleObject.CoDE_20p_toZero import CoDE_20p_toZero
 from src.algorithms.singleObject.CoDE_random10p_toZero import CoDE_random10p_toZero
@@ -9,11 +9,11 @@ from src.algorithms.singleObject.CoDE_random20p_toZero import CoDE_random20p_toZ
 from src.algorithms.singleObject.CoDE_random30p_toZero import CoDE_random30p_toZero
 
 import sys
+
 sys.path.append('..')
 from src.utils.MyProblem import MyProblem
 import geatpy as ea
 import numpy as np
-
 
 
 class SSDP:
@@ -31,12 +31,13 @@ class SSDP:
         l:决策变量的下界
         u:决策变量的上界
     '''
+
     def __init__(self, X, y, model, drawing, l, u, soea):
 
         '''初始化必要的相关参数'''
 
         '''===============================实例化问题对象=================================='''
-        self.problem = MyProblem(target =[0], X = X, y = y, model = model, l = l, u = u)
+        self.problem = MyProblem(target=[0], X=X, y=y, model=model, l=l, u=u)
 
         '''===========================种群设置=============================='''
         self.model = model
@@ -96,18 +97,15 @@ class SSDP:
             print('model parameters error!!')
         self.myAlgorithm.drawing = drawing
 
-
     def run(self):
         [self.population, self.obj_trace, self.var_trace] = self.myAlgorithm.run()  # 执行算法模板
         self.best_gen = np.argmin(self.problem.maxormins * self.obj_trace[:, 1])  # 记录最优种群个体是在哪一代
         self.best_ObjV = self.obj_trace[self.best_gen, 1]
-        #self.population.save()  # 把最后一代种群的信息保存到文件中
+        # self.population.save()  # 把最后一代种群的信息保存到文件中
         # 预测函数
-
 
     def predict(self, testX):
         pass
-
 
     def output(self):
 
@@ -118,5 +116,3 @@ class SSDP:
         print('时间已过 %s 秒' % (self.myAlgorithm.passTime))
         for num in self.var_trace[self.best_gen, :]:
             print(chr(int(num)), end='')
-
-
