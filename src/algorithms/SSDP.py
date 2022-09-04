@@ -10,7 +10,7 @@ from src.algorithms.singleObject.CoDE_random30p_toZero import CoDE_random30p_toZ
 
 import sys
 sys.path.append('..')
-from MyProblem import MyProblem
+from src.utils.MyProblem import MyProblem
 import geatpy as ea
 import numpy as np
 

@@ -9,7 +9,7 @@ from src.algorithms.multiObject.moea_NSGA2_random30p_toZero import moea_NSGA2_ra
 
 import sys
 sys.path.append('..')
-from MyProblem import MyProblem
+from src.utils.MyProblem import MyProblem
 import geatpy as ea
 
 class MSDP:

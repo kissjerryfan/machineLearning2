@@ -1,5 +1,5 @@
 import tensorflow
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 tf.disable_v2_behavior()
 import numpy as np
 import src.utils.target_functions as tgf
