@@ -1,9 +1,9 @@
 import numpy as np
 import tensorflow as tf
-from BPNN import BPNN
+from src.algorithms.BPNN import BPNN
 from sklearn.metrics import mean_squared_error
 from sklearn.neural_network import MLPRegressor
-from NN import NN
+from src.algorithms.NN import NN
 
 # 输入：X(n, d), parameters,(m, d+1)
 # d 特征的数量, n样本个数, m种群大小
@@ -19,7 +19,7 @@ def get_logistic_predict(X, parameters):
     new_X = np.ones((X.shape[0], X.shape[1] + 1))
     new_X[:, 0:-1] = X
     y = np.dot(new_X, np.transpose(parameters)).astype(float)
-    new_y = 1 / (1 + np.exp(-x))
+    new_y = 1 / (1 + np.exp(-y))
     if new_y >= 0.5:
         new_y = 1
     else:

@@ -2,7 +2,7 @@ import tensorflow
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import numpy as np
-import target_functions as tgf
+import src.utils.target_functions as tgf
 import matplotlib.pyplot as pltpythom
 
 

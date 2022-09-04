@@ -1,11 +1,11 @@
-from multi_objective.moea_NSGA2_toZero import moea_NSGA2_toZero
-from multi_objective.moea_NSGA2_DE_toZero import moea_NSGA2_DE_toZero
-from multi_objective.moea_NSGA2_10p_toZero import  moea_NSGA2_10p_toZero
-from multi_objective.moea_NSGA2_20p_toZero import  moea_NSGA2_20p_toZero
-from multi_objective.moea_NSGA2_30p_toZero import  moea_NSGA2_30p_toZero
-from multi_objective.moea_NSGA2_random10p_toZero import moea_NSGA2_random10p_toZero
-from multi_objective.moea_NSGA2_random20p_toZero import moea_NSGA2_random20p_toZero
-from multi_objective.moea_NSGA2_random30p_toZero import moea_NSGA2_random30p_toZero
+from src.algorithms.multiObject.moea_NSGA2_toZero import moea_NSGA2_toZero
+from src.algorithms.multiObject.moea_NSGA2_DE_toZero import moea_NSGA2_DE_toZero
+from src.algorithms.multiObject.moea_NSGA2_10p_toZero import  moea_NSGA2_10p_toZero
+from src.algorithms.multiObject.moea_NSGA2_20p_toZero import  moea_NSGA2_20p_toZero
+from src.algorithms.multiObject.moea_NSGA2_30p_toZero import  moea_NSGA2_30p_toZero
+from src.algorithms.multiObject.moea_NSGA2_random10p_toZero import moea_NSGA2_random10p_toZero
+from src.algorithms.multiObject.moea_NSGA2_random20p_toZero import moea_NSGA2_random20p_toZero
+from src.algorithms.multiObject.moea_NSGA2_random30p_toZero import moea_NSGA2_random30p_toZero
 
 import sys
 sys.path.append('..')

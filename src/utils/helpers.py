@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from MSDP import MSDP
-from SSDP import SSDP
-from BPNN import BPNN
+from src.algorithms.MSDP import MSDP
+from src.algorithms.SSDP import SSDP
+from src.algorithms.BPNN import BPNN
 import target_functions as tgf
 import matplotlib.pyplot as plt
 import csv

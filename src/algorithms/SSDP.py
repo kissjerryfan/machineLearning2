@@ -1,12 +1,12 @@
-from single_objective.CoDE import CoDE
-from single_objective.CoDE_toZero import CoDE_toZero
-from single_objective.CoDE_10p_lr_toZero import CoDE_10p_lr_toZero
-from single_objective.CoDE_20p_lr_toZero import  CoDE_20p_lr_toZero
-from single_objective.CoDE_10p_toZero import CoDE_10p_toZero
-from single_objective.CoDE_20p_toZero import CoDE_20p_toZero
-from single_objective.CoDE_random10p_toZero import CoDE_random10p_toZero
-from single_objective.CoDE_random20p_toZero import CoDE_random20p_toZero
-from single_objective.CoDE_random30p_toZero import CoDE_random30p_toZero
+from src.algorithms.singleObject.CoDE import CoDE
+from src.algorithms.singleObject.CoDE_toZero import CoDE_toZero
+from src.algorithms.singleObject.CoDE_10p_lr_toZero import CoDE_10p_lr_toZero
+from src.algorithms.singleObject.CoDE_20p_lr_toZero import  CoDE_20p_lr_toZero
+from src.algorithms.singleObject.CoDE_10p_toZero import CoDE_10p_toZero
+from src.algorithms.singleObject.CoDE_20p_toZero import CoDE_20p_toZero
+from src.algorithms.singleObject.CoDE_random10p_toZero import CoDE_random10p_toZero
+from src.algorithms.singleObject.CoDE_random20p_toZero import CoDE_random20p_toZero
+from src.algorithms.singleObject.CoDE_random30p_toZero import CoDE_random30p_toZero
 
 import sys
 sys.path.append('..')
