@@ -15,9 +15,9 @@ import os
 def training_test_with_sklearnmodel(save_folder, model):
     # 调用函数，获得要测试的数据集名字
     fileLists = dictionaries.get_filelists()
-    path = 'data/'
-    save_train_path = '../results/compared_algorithms/' + save_folder+'/train/'
-    save_test_path = '../results/compared_algorithms/' + save_folder+'/test/'
+    path = '../../data/'
+    save_train_path = '../../results/compared_algorithms/' + save_folder+'/train/'
+    save_test_path = '../../results/compared_algorithms/' + save_folder+'/test/'
 
     train_doc1 = [['filename', 'FPA', 'AAE', 'numOfnonZero', 'L1', 'MSE']]
 
@@ -85,9 +85,9 @@ f. 文档6：记录每个数据集非支配集的【MSE】
 '''
 def training_test_10times_sklearnmodel(save_folder, model):
     fileLists = dictionaries.get_filelists()
-    path = 'data/'
-    save_train_path = '../results/compared_algorithms/' + save_folder+'/train/'
-    save_test_path = '../results/compared_algorithms/' + save_folder+'/test/'
+    path = '../../data/'
+    save_train_path = '../../results/compared_algorithms/' + save_folder+'/train/'
+    save_test_path = '../../results/compared_algorithms/' + save_folder+'/test/'
 
     train_doc1 = [['filename', 'FPA', 'AAE', 'numOfnonZero', 'L1', 'MSE']]
     train_doc2 = []

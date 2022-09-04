@@ -41,9 +41,9 @@ e. 文档5+：对每个数据集，记录其迭代的每一代的最优参数
 
 def training_record_for_ssdp(predict_model, l, u, save_folder, soea):
     fileLists = dictionaries.get_filelists()
-    path = 'data/'
+    path = '../../data/'
     save_file = '单目标算法1'
-    save_path = '../results/' + save_folder + '/train/'
+    save_path = '../../results/' + save_folder + '/train/'
     doc1 = [['filename', 'FPA', 'AAE', 'numOfNonZero', 'L1', 'MSE']]
     doc2 = []
     doc3 = []
@@ -147,7 +147,7 @@ u:决策变量的上界
 def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
     fileLists = dictionaries.get_filelists()
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
-    path = 'data/'
+    path = '../../data/'
   
     doc1 = []
     doc1_names = ['filename']
@@ -167,7 +167,7 @@ def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
     doc1_names.append(para_name[4])
     doc6 = []
 
-    save_path = '../results/' + save_folder + '/train/'
+    save_path = '../../results/' + save_folder + '/train/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
             print('\n\n\n' + fileLists[i][j] + '\n\n\n')
@@ -259,7 +259,7 @@ def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
 def training_record_for_msdp(save_folder, target, predict_model, l, u, moea, drawing=0, maxgen=100):
     fileLists = dictionaries.get_filelists()
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
-    path = 'data/'
+    path = '../../data/'
 
     doc1 = []
     doc1_names = ['filename']
@@ -279,7 +279,7 @@ def training_record_for_msdp(save_folder, target, predict_model, l, u, moea, dra
     doc1_names.append(para_name[4])
     doc6 = []
 
-    save_path = '../results/' + save_folder + '/train/'
+    save_path = '../../results/' + save_folder + '/train/'
    # save_path = '../results/多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]/train/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
@@ -413,7 +413,7 @@ def training_record_for_msdp(save_folder, target, predict_model, l, u, moea, dra
 # 分别使用单目标优化算法和多目标优化算法运行数据集，并记录单目标的最优解和多目标的非支配集，以及平均FPA和AAE
 def idea2_with_plotpic():
     fileLists = dictionaries.get_filelists()
-    path = 'data/'
+    path = '../../data/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
             X, y = getfeatures(path, fileLists[i][j])
@@ -474,12 +474,12 @@ def idea2_with_plotpic():
 
 def test_model(folder_name, predict_model, type):
     fileLists = dictionaries.get_filelists()
-    path = 'data/'
+    path = '../../data/'
     # 1. 修改params_path,来修改获取参数的地址
     # 2. 修改save_path, 来修改存储结果的地址
     folder_name = folder_name
-    params_path = '../results/' + folder_name + '/train/'
-    save_path = '../results/' + folder_name + '/test/'
+    params_path = '../../results/' + folder_name + '/train/'
+    save_path = '../../results/' + folder_name + '/test/'
 
     # 对于单目标算法，需要加一个测试最优模型的文档
     if type == 1:
@@ -579,7 +579,7 @@ u:决策变量的上界
 def train_validation_for_msdp(save_folder, target, predict_model, l, u, moea, validation_size, drawing=0, maxgen=100):
     fileLists = dictionaries.get_filelists()
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
-    path = 'data/'
+    path = '../../data/'
 
     doc1 = []
     doc1_names = ['filename']
@@ -599,8 +599,8 @@ def train_validation_for_msdp(save_folder, target, predict_model, l, u, moea, va
     doc1_names.append(para_name[4])
     doc6 = []
 
-    train_save_path = '../results/' + save_folder + '/train/'
-    validation_save_path = '../results/' + save_folder + '/validation/'
+    train_save_path = '../../results/' + save_folder + '/train/'
+    validation_save_path = '../../results/' + save_folder + '/validation/'
     # save_path = '../results/多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]/train/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
@@ -776,8 +776,8 @@ e. 文档5+：对每个数据集，记录其迭代的每一代的最优参数
 
 def train_for_bpnn(save_folder):
     fileLists = dictionaries.get_filelists()
-    path = 'data/'
-    save_path = '../results/' + save_folder + '/train/'
+    path = '../../data/'
+    save_path = '../../results/' + save_folder + '/train/'
     doc1 = [['filename', 'FPA', 'AAE', 'MSE']]
     doc2 = []
     doc3 = []
