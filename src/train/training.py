@@ -22,7 +22,7 @@ from src.utils import helpers
 def run_ssdp_train(soea, predict_model):
     soea_name = dictionaries.get_soea_name(soea)
     predict_model_name = dictionaries.get_model_method_name(predict_model)
-    folder_name = 'single-objective/' + predict_model_name + '/' + soea_name
+    folder_name = 'singleObject/' + predict_model_name + '/' + soea_name
     l = -20
     u = 20
     helpers.training_record_for_ssdp(predict_model=predict_model, l=l, u=u, save_folder=folder_name, soea=soea)
@@ -32,7 +32,7 @@ def run_msdp_train(moea, targets, predict_model):
     moea_name = dictionaries.get_moea_name(moea)
     predict_model_name = dictionaries.get_model_method_name(predict_model)
     targets_name = dictionaries.get_target_composition(targets)
-    folder_name = 'multi-objective/' + predict_model_name + '/' + moea_name + '/' + targets_name
+    folder_name = 'multiObject/' + predict_model_name + '/' + moea_name + '/' + targets_name
     l = -20
     u = 20
     helpers.training_record_for_msdp(save_folder=folder_name, target=targets, predict_model=predict_model, l=l, u=u,
@@ -42,7 +42,7 @@ def run_msdp_train(moea, targets, predict_model):
 def train_ssdp_m(soea, predict_model):
     soea_name = dictionaries.get_soea_name(soea)
     predict_model_name = dictionaries.get_model_method_name(predict_model)
-    folder_name = 'multi-objective/' + predict_model_name + '/' + soea_name
+    folder_name = 'multiObject/' + predict_model_name + '/' + soea_name
     l = -20
     u = 20
     helpers.training_record_for_ssdp_m(predict_model=predict_model, l=l, u=u, save_folder=folder_name, soea=soea)
@@ -52,7 +52,7 @@ def split_train_test_msdp(moea, targets, predict_model, validation_size=0.2):
     moea_name = dictionaries.get_moea_name(moea)
     predict_model_name = dictionaries.get_model_method_name(predict_model)
     targets_name = dictionaries.get_target_composition(targets)
-    folder_name = 'split-train/' + predict_model_name + '/' + moea_name + '/' + targets_name
+    folder_name = 'splitTrain/' + predict_model_name + '/' + moea_name + '/' + targets_name
     l = -20
     u = 20
     helpers.train_validation_for_msdp(save_folder=folder_name, target=targets, predict_model=predict_model, l=l, u=u,
