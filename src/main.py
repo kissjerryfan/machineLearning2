@@ -1,16 +1,21 @@
 import os
-
-import src.test.test as test
+from src.train import training
 
 if __name__ == "__main__":
-    # 1. 测试单目标优化模型-仅记录一个结果----------
-    # (1) 调用函数见“行25-30”
-    # (2) 参数“soea”表示运行所使用的优化算法，参数“method”表示运行所使用的模型（如linear）
-    # (3) 结果保存在“\results\single-objective\运行所使用的模型(如linear)\”中；
-    # (4) 运行前需先创建好对应的文件夹——如：“\results\single-objective\linear\CoDE\test”
+    # test.run_msdp_test(moea=13, target=[0, 2, 4], method=1)
+    # test.run_ssdpM_test(method=1, soea=1)
+    # test.run_ssdp_test(soea=1, method=1)
+    # training.run_msdp_train(moea=13, targets=[0, 2, 4], predict_model=1)
+    # test.run_msdp_test(method=1, moea=13, target=[0, 2, 4])
+    # training.run_ssdp_train(soea=1, predict_model=1)  # 运行linear/CoDE算法
+    single_time = True
+    training.run_linearRegresion_model()
+    training.run_RRgcv_model(single_time)
+    training.run_lassoLarsCV(single_time)
+    training.run_Lars(single_time)
+    training.run_LassoLars(single_time)
+    training.run_MLPRegressor(single_time)
+    training.run_randomForestRegressor(single_time)
 
-    # soea ：{1: 'CoDE', 2: 'DE_rand_1_bin', 3:'CoDE_toZero', 4: 'CoDE_10p_toZero', 5:'CoDE_20p_toZero',
-    # 6:'CoDE_10p_lr_toZero', 7:'CoDE_20p_lr_toZero', 8:'CoDE_random10p_toZero', 9:'CoDE_random20p_toZero',
-    # 10:'CoDE_random30p_toZero'} method ：{1: 'linear', 2: 'BPNN', 3:'NN', 4:'MLP', 5:'mlp3', 6: 'mlp5'}
-    # test.run_ssdp_test(soea, method)
-    test.run_ssdp_test(soea=1, method=1)  # 根据linear/CoDE算法训练结果进行测试
+    # test.run_ssdp_test(soea = 1, method = 1) # 根据linear/CoDE算法训练结果进行测试
+    # test.run_msdp_test(method=1, moea=13, target=[0, 2, 4])  # 根据linear/nsga2_random20p_toZero/FPA_NNZ_MSE训练结果进行测试

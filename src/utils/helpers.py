@@ -4,19 +4,18 @@ from pathlib import Path
 from src.algorithms.MSDP import MSDP
 from src.algorithms.SSDP import SSDP
 from src.algorithms.BPNN import BPNN
-import src.utils.target_functions as tgf
+from src.utils import target_functions as tgf
 import matplotlib.pyplot as plt
 import csv
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from src.utils import dictionaries
 import math
+import os
 
 
 def getfeatures(path, file):
-    # path + file + '.csv'：数据相对路径，data就是数据集中的数据 header=None:表示原始数据没有列索引
     data = pd.read_csv(path + file + '.csv', header=None)
-    # 返回索引对象，转为队列
     columns = data.columns.tolist()
     X = data[columns[:-1]]
     y = data[columns[-1]]
@@ -41,9 +40,9 @@ e. 文档5+：对每个数据集，记录其迭代的每一代的最优参数
 
 def training_record_for_ssdp(predict_model, l, u, save_folder, soea):
     fileLists = dictionaries.get_filelists()
-    path = '../../data/'
+    path = '../data/'
     save_file = '单目标算法1'
-    save_path = '../../results/' + save_folder + '/train/'
+    save_path = '../results/' + save_folder + '/train/'
     doc1 = [['filename', 'FPA', 'AAE', 'numOfNonZero', 'L1', 'MSE']]
     doc2 = []
     doc3 = []
@@ -54,6 +53,7 @@ def training_record_for_ssdp(predict_model, l, u, save_folder, soea):
             X, y = getfeatures(path, fileLists[i][j])
             model = SSDP(X=X, y=y, model=predict_model, drawing=0, l=l, u=u, soea=soea)
             model.run()
+
 
             # 找出单目标的最优的f1, f2, f3
             best_gen = np.argmin(model.problem.maxormins * model.obj_trace[:, 1])
@@ -97,6 +97,7 @@ def training_record_for_ssdp(predict_model, l, u, save_folder, soea):
             doc4.append(best_param)  # 种群最优个体的参数
 
             params = pd.DataFrame(model.var_trace)
+            os.makedirs(save_path, exist_ok=True)
             params.to_csv(save_path + fileLists[i][j] + '.csv')
 
     with open(save_path + 'doc1.csv', 'w', newline='') as file1:
@@ -143,12 +144,11 @@ l:决策变量的下界
 u:决策变量的上界
 '''
 
-
 def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
     fileLists = dictionaries.get_filelists()
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
-    path = '../../data/'
-
+    path = '../data/'
+  
     doc1 = []
     doc1_names = ['filename']
 
@@ -167,7 +167,7 @@ def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
     doc1_names.append(para_name[4])
     doc6 = []
 
-    save_path = '../../results/' + save_folder + '/train/'
+    save_path = '../results/' + save_folder + '/train/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
             print('\n\n\n' + fileLists[i][j] + '\n\n\n')
@@ -193,7 +193,7 @@ def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
             elif predict_model == 4:
                 predvalue = tgf.mlp_predict(X, best_Chrom)
             elif predict_model == 5:
-                predvalue = tgf.mlpn_predict(X, best_Chrom, 3)
+                predvalue = tgf.mlpn_predict(X,best_Chrom, 3)
             elif predict_model == 6:
                 predvalue = tgf.mlpn_predict(X, best_Chrom, 5)
             else:
@@ -225,8 +225,9 @@ def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
             doc6.append(f5_set)
 
             params = pd.DataFrame(best_Chrom)
+            os.makedirs(save_path, exist_ok=True)
             params.to_csv(save_path + fileLists[i][j] + '.csv')
-
+            
     with open(save_path + 'doc1.csv', 'w', newline='') as file1:
         writer1 = csv.writer(file1)
         for row in doc1:
@@ -256,12 +257,10 @@ def training_record_for_ssdp_m(save_folder, predict_model, l, u, soea):
         writer6 = csv.writer(file6)
         for row in doc6:
             writer6.writerow(row)
-
-
 def training_record_for_msdp(save_folder, target, predict_model, l, u, moea, drawing=0, maxgen=100):
     fileLists = dictionaries.get_filelists()
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
-    path = '../../data/'
+    path = '../data/'
 
     doc1 = []
     doc1_names = ['filename']
@@ -281,8 +280,8 @@ def training_record_for_msdp(save_folder, target, predict_model, l, u, moea, dra
     doc1_names.append(para_name[4])
     doc6 = []
 
-    save_path = '../../results/' + save_folder + '/train/'
-    # save_path = '../results/多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]/train/'
+    save_path = '../results/' + save_folder + '/train/'
+   # save_path = '../results/多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]/train/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
             print('\n\n\n' + fileLists[i][j] + '\n\n\n')
@@ -373,12 +372,13 @@ def training_record_for_msdp(save_folder, target, predict_model, l, u, moea, dra
                     f5_set.insert(0, fileLists[i][j])
                     doc6.append(f5_set)
 
-            # print('平均FPA, 对应非零参数个数', avg_fpa, avg_aae)
+            #print('平均FPA, 对应非零参数个数', avg_fpa, avg_aae)
 
-            # print('平均FPA, AAE, 非零参数的个数', avg_fpa, avg_nonp)
-            # doc1.append([fileLists[i][j], avg_fpa, avg_nonp])
+           # print('平均FPA, AAE, 非零参数的个数', avg_fpa, avg_nonp)
+            #doc1.append([fileLists[i][j], avg_fpa, avg_nonp])
 
             params = pd.DataFrame(model.NDSet.Chrom)
+            os.makedirs(save_path, exist_ok=True)
             params.to_csv(save_path + fileLists[i][j] + '.csv')
 
     with open(save_path + 'doc1.csv', 'w', newline='') as file1:
@@ -415,7 +415,7 @@ def training_record_for_msdp(save_folder, target, predict_model, l, u, moea, dra
 # 分别使用单目标优化算法和多目标优化算法运行数据集，并记录单目标的最优解和多目标的非支配集，以及平均FPA和AAE
 def idea2_with_plotpic():
     fileLists = dictionaries.get_filelists()
-    path = '../../data/'
+    path = '../data/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
             X, y = getfeatures(path, fileLists[i][j])
@@ -476,12 +476,12 @@ def idea2_with_plotpic():
 
 def test_model(folder_name, predict_model, type):
     fileLists = dictionaries.get_filelists()
-    path = '../../data/'
+    path = '../data/'
     # 1. 修改params_path,来修改获取参数的地址
     # 2. 修改save_path, 来修改存储结果的地址
     folder_name = folder_name
-    params_path = '../../results/' + folder_name + '/train/'
-    save_path = '../../results/' + folder_name + '/test/'
+    params_path = '../results/' + folder_name + '/train/'
+    save_path = '../results/' + folder_name + '/test/'
 
     # 对于单目标算法，需要加一个测试最优模型的文档
     if type == 1:
@@ -517,11 +517,13 @@ def test_model(folder_name, predict_model, type):
                 test_results.append([fileLists[i][j + 1], f1, f2, f3, f4, f5])
             test_results = pd.DataFrame(test_results)
             print('save', fileLists[i][j + 1])
+            os.makedirs(save_path, exist_ok=True)
             test_results.to_csv(save_path + fileLists[i][j + 1] + '.csv')
 
             if type == 1:
                 best_param = best_params.loc[fileLists[i][j]].values
                 if predict_model == 1:
+
                     predValue = tgf.linear_predict(X, best_param)
                 elif predict_model == 2:
                     predValue = tgf.bpnn_predict(X, best_param)
@@ -580,7 +582,7 @@ u:决策变量的上界
 def train_validation_for_msdp(save_folder, target, predict_model, l, u, moea, validation_size, drawing=0, maxgen=100):
     fileLists = dictionaries.get_filelists()
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
-    path = '../../data/'
+    path = '../data/'
 
     doc1 = []
     doc1_names = ['filename']
@@ -600,8 +602,8 @@ def train_validation_for_msdp(save_folder, target, predict_model, l, u, moea, va
     doc1_names.append(para_name[4])
     doc6 = []
 
-    train_save_path = '../../results/' + save_folder + '/train/'
-    validation_save_path = '../../results/' + save_folder + '/validation/'
+    train_save_path = '../results/' + save_folder + '/train/'
+    validation_save_path = '../results/' + save_folder + '/validation/'
     # save_path = '../results/多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]/train/'
     for i in range(len(fileLists)):
         for j in range(1, len(fileLists[i])):
@@ -701,6 +703,7 @@ def train_validation_for_msdp(save_folder, target, predict_model, l, u, moea, va
             # doc1.append([fileLists[i][j], avg_fpa, avg_nonp])
 
             params = pd.DataFrame(model.NDSet.Chrom)
+            os.makedirs(train_save_path, exist_ok=True)
             params.to_csv(train_save_path + fileLists[i][j] + '.csv')
 
             validation_results = [['filename', 'FPA', 'AAE', 'numOfnonZero', 'L1', 'MSE']]
@@ -718,7 +721,7 @@ def train_validation_for_msdp(save_folder, target, predict_model, l, u, moea, va
                 elif predict_model == 5:
                     v_predValue = tgf.mlpn_predict(X_validation, params[t], 3)
                 elif predict_model == 6:
-                    v_predValue = tgf.mlpn_predict(X_validation, params[t], 5)
+                    v_predValue =tgf.mlpn_predict(X_validation, params[t], 5)
                 else:
                     print('error predict model number in helpers!!!')
                 v_f1 = tgf.FPA(v_predValue, y_validation)
@@ -729,6 +732,7 @@ def train_validation_for_msdp(save_folder, target, predict_model, l, u, moea, va
                 validation_results.append([fileLists[i][j], v_f1, v_f2, v_f3, v_f4, v_f5])
             validation_results = pd.DataFrame(validation_results)
             print('save_validation:', fileLists[i][j])
+            os.makedirs(validation_save_path, exist_ok=True)
             validation_results.to_csv(validation_save_path + fileLists[i][j] + '.csv')
 
     with open(train_save_path + 'doc1.csv', 'w', newline='') as file1:
@@ -772,15 +776,13 @@ c. 文档3：记录每个数据集进化的每一代的【种群最优目标函�
 d. 文档4：记录每个数据集最优解的参数
 e. 文档5+：对每个数据集，记录其迭代的每一代的最优参数
 '''
-
-
 # folder = '单目标优化__BPNN_NIND=100__MAX_GEN=100__CoDE_决策变量范围_[-1,1]'
 
 
 def train_for_bpnn(save_folder):
     fileLists = dictionaries.get_filelists()
-    path = '../../data/'
-    save_path = '../../results/' + save_folder + '/train/'
+    path = '../data/'
+    save_path = '../results/' + save_folder + '/train/'
     doc1 = [['filename', 'FPA', 'AAE', 'MSE']]
     doc2 = []
     doc3 = []
@@ -820,6 +822,7 @@ def train_for_bpnn(save_folder):
             doc4.append(best_param)  # 种群最优个体的参数
 
             params = pd.DataFrame(model.var_trace)
+            os.makedirs(save_path, exist_ok=True)
             params.to_csv(save_path + fileLists[i][j] + '.csv')
 
     with open(save_path + 'doc1.csv', 'w', newline='') as file1:
@@ -857,7 +860,7 @@ def comparison_sm_train(single_path, multi_path, parameters, single_name, multi_
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero'}
     # 需要注意的是，恰好再测试集和数据集时，记录最优的模型对应的性能都是doc1文件。
     single_file = pd.read_csv(single_path + 'doc1.csv', header=0, index_col=0)
-    # single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
+    #single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
     multi_files = []
     if 0 in parameters:
         file1 = open(multi_path + 'doc2.csv', 'r')
@@ -894,6 +897,7 @@ def comparison_sm_train(single_path, multi_path, parameters, single_name, multi_
             m_y = list(map(lambda x: float(x), mdata2[i][1:]))
             plt.scatter(m_x, m_y, color='green', label=multi_name)
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + mdata1[i][0] + '.png')
             plt.close()
 
@@ -912,7 +916,7 @@ def comparison_sm_test(single_path, multi_path, parameters, single_name, multi_n
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero'}
     # 需要注意的是，恰好再测试集和数据集时，记录最优的模型对应的性能都是doc1文件。
     single_file = pd.read_csv(single_path + 'doc1.csv', header=0, index_col=0)
-    # single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
+    #single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
     fileLists = dictionaries.get_filelists()
     for i in range(len(fileLists)):
         for j in range(2, len(fileLists[i])):
@@ -923,8 +927,7 @@ def comparison_sm_test(single_path, multi_path, parameters, single_name, multi_n
             plt.ylabel(para_name[parameters[1]])
 
             plt.scatter(single_file.loc[fileLists[i][j], para_name[parameters[0]]], single_file.loc[fileLists[i][j],
-                                                                                                    para_name[
-                                                                                                        parameters[1]]],
+                                                                                                    para_name[parameters[1]]],
                         color='red', label=single_name)
             #
 
@@ -933,6 +936,7 @@ def comparison_sm_test(single_path, multi_path, parameters, single_name, multi_n
             plt.scatter(m_file[para_name[parameters[0]]].values,
                         m_file[para_name[parameters[1]]].values, color='green', label=multi_name)
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + fileLists[i][j] + '.png')
             plt.close()
 
@@ -1013,6 +1017,7 @@ def comparison_sm_train_test(single_path, multi_path, parameters, single_name, m
                         color='yellow', label=multi_name + '/test')
 
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + train_mdata1[i][0] + '.png')
             plt.close()
     elif len(parameters) == 3:
@@ -1074,6 +1079,7 @@ def comparison_mm_train(path1, path2, name1, name2, parameters, save_path):
             plt.scatter(m2_x, m2_y, color='green', label=name2)
 
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + mdata11[i][0] + '.png')
             plt.close()
 
@@ -1103,6 +1109,7 @@ def comparison_mm_test(path1, path2, name1, name2, parameters, save_path):
                         label=name2)
 
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + fileLists[i][j] + '.png')
             plt.close()
 
@@ -1182,6 +1189,7 @@ def comparison_mm_train_test(path1, path2, name1, name2, parameters, save_path):
                         color='red', label=name2 + '/test')
 
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + train_data11[i][0] + '.png')
             plt.close()
 
@@ -1256,6 +1264,7 @@ def comparison_difcolor_ssmm_train(single_paths, multi_paths, parameters, single
 
                     plt.title(fileLists[i][j] + '_' + fileLists[i][j])
                     plt.legend()
+                    os.makedirs(save_path,exist_ok=True)
                     plt.savefig(save_path + fileLists[i][j] + '.png')
                     plt.close()
 
@@ -1303,14 +1312,14 @@ def comparison_difcolor_ssmm_train(single_paths, multi_paths, parameters, single
 
                 plt.title(mdatas1[0][i][0] + '_' + mdatas1[0][i][0])
                 plt.legend()
+                os.makedirs(save_path, exist_ok=True)
                 plt.savefig(save_path + mdatas1[0][i][0] + '.png')
                 plt.close()
     elif len(parameters) == 3:
         pass
 
 
-def comparison_difmarker_ssmm_train(single_paths, multi_paths, parameters, single_names, multi_names, save_path, msize,
-                                    wsize, figsize, if_show_label=True):
+def comparison_difmarker_ssmm_train(single_paths, multi_paths, parameters, single_names, multi_names, save_path, msize, wsize,figsize, if_show_label=True):
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
                   7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
@@ -1353,6 +1362,7 @@ def comparison_difmarker_ssmm_train(single_paths, multi_paths, parameters, singl
                     if if_show_label:
                         plt.legend(prop={'size': wsize[2]})
                     plt.tick_params(labelsize=wsize[3])
+                    os.makedirs(save_path, exist_ok=True)
                     plt.savefig(save_path + fileLists[i][j] + '.png')
                     plt.close()
 
@@ -1413,6 +1423,7 @@ def comparison_difmarker_ssmm_train(single_paths, multi_paths, parameters, singl
                 if if_show_label:
                     plt.legend(prop={'size': wsize[2]})
                 plt.tick_params(labelsize=wsize[3])
+                os.makedirs(save_path, exist_ok=True)
                 plt.savefig(save_path + mdatas1[0][i][0] + '.png')
                 plt.close()
     elif len(parameters) == 3:
@@ -1429,8 +1440,7 @@ def comparison_difmarker_ssmm_train(single_paths, multi_paths, parameters, singl
 '''
 
 
-def comparison_difmarker_ssmm_test(single_paths, multi_paths, parameters, single_names, multi_names, save_path, wsize,
-                                   msize, figsize, if_show_label=True):
+def comparison_difmarker_ssmm_test(single_paths, multi_paths, parameters, single_names, multi_names, save_path, wsize, msize,figsize, if_show_label=True):
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
                   7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
@@ -1440,7 +1450,7 @@ def comparison_difmarker_ssmm_test(single_paths, multi_paths, parameters, single
     single_files = []
     for single_path in single_paths:
         single_files.append(pd.read_csv(single_path + 'doc1.csv', header=0, index_col=0))
-    # single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
+    #single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
     fileLists = dictionaries.get_filelists()
     for i in range(len(fileLists)):
         for j in range(2, len(fileLists[i])):
@@ -1454,11 +1464,11 @@ def comparison_difmarker_ssmm_test(single_paths, multi_paths, parameters, single
             for multi_path, multi_name in zip(multi_paths, multi_names):
                 m_file = pd.read_csv(multi_path + fileLists[i][j] + '.csv', header=1, index_col=1)
                 if multi_name == 'CoDE':
-                    multi_name = 'learning-to-rank'
+                        multi_name = 'learning-to-rank'
                 write_name = multi_name.replace('nonz', 'NNZ')
                 if if_show_label:
                     plt.plot(m_file[para_name[parameters[0]]].values, m_file[para_name[parameters[1]]].values,
-                             multi_marker_dict[multi_marker], label=write_name, ms=msize[1])
+                    multi_marker_dict[multi_marker], label=write_name, ms=msize[1])
                 else:
                     plt.plot(m_file[para_name[parameters[0]]].values, m_file[para_name[parameters[1]]].values,
                              multi_marker_dict[multi_marker], ms=msize[1])
@@ -1469,14 +1479,12 @@ def comparison_difmarker_ssmm_test(single_paths, multi_paths, parameters, single
                 if single_name == 'CoDE':
                     single_name = 'learning-to-rank'
                 if if_show_label:
-                    plt.plot(single_file.loc[fileLists[i][j], para_name[parameters[0]]],
-                             single_file.loc[fileLists[i][j],
-                                             para_name[parameters[1]]],
+                    plt.plot(single_file.loc[fileLists[i][j], para_name[parameters[0]]], single_file.loc[fileLists[i][j],
+                                                                                                         para_name[parameters[1]]],
                              single_marker_dict[single_marker], label=single_name, ms=msize[0])
                 else:
-                    plt.plot(single_file.loc[fileLists[i][j], para_name[parameters[0]]],
-                             single_file.loc[fileLists[i][j],
-                                             para_name[parameters[1]]],
+                    plt.plot(single_file.loc[fileLists[i][j], para_name[parameters[0]]], single_file.loc[fileLists[i][j],
+                                                                                                         para_name[parameters[1]]],
                              single_marker_dict[single_marker], ms=msize[0])
                     print(single_marker_dict[single_marker], single_name)
                 single_marker += 1
@@ -1485,6 +1493,7 @@ def comparison_difmarker_ssmm_test(single_paths, multi_paths, parameters, single
             if if_show_label:
                 plt.legend(prop={'size': wsize[2]})
             plt.tick_params(labelsize=wsize[3])
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + fileLists[i][j - 1] + '_' + fileLists[i][j] + '.png')
             plt.close()
 
@@ -1497,7 +1506,7 @@ def comparison_difcolor_ssmm_test(single_paths, multi_paths, parameters, single_
     single_files = []
     for single_path in single_paths:
         single_files.append(pd.read_csv(single_path + 'doc1.csv', header=0, index_col=0))
-    # single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
+    #single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
     fileLists = dictionaries.get_filelists()
     for i in range(len(fileLists)):
         for j in range(2, len(fileLists[i])):
@@ -1518,14 +1527,13 @@ def comparison_difcolor_ssmm_test(single_paths, multi_paths, parameters, single_
                     single_name = 'learning-to-rank'
 
                 plt.scatter(single_file.loc[fileLists[i][j], para_name[parameters[0]]], single_file.loc[fileLists[i][j],
-                                                                                                        para_name[
-                                                                                                            parameters[
-                                                                                                                1]]],
+                                                                                                        para_name[parameters[1]]],
                             color=color_dict[color], label=single_name)
                 color += 1
 
             plt.title(fileLists[i][j - 1] + '_' + fileLists[i][j])
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + fileLists[i][j - 1] + '_' + fileLists[i][j] + '.png')
             plt.close()
 
@@ -1641,6 +1649,7 @@ def comparison_ssmm_train_test(single_paths, multi_paths, parameters, single_nam
                             color=color_dict[color], label=single_name + '/test')
 
             plt.legend()
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + train_mdatas1[0][i][0] + '.png')
             plt.close()
     elif len(parameters) == 3:
@@ -1650,7 +1659,7 @@ def comparison_ssmm_train_test(single_paths, multi_paths, parameters, single_nam
 
 
 def comparison_difmarker_line_train(single_paths, multi_paths, line_paths, parameters, single_names, multi_names,
-                                    line_names, save_path, if_show_label=True, if_show_rtborder=True):
+                                    line_names, save_path, if_show_label=True, if_show_rtborder = True):
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
                   7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
@@ -1698,12 +1707,10 @@ def comparison_difmarker_line_train(single_paths, multi_paths, line_paths, param
                         if line_name == 'CoDE':
                             line_name = 'learning-to-rank'
                         line_values = line_file.loc[fileLists[i][j]].values.astype('float64').tolist()
-                        plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--',
-                                   label=line_name)
+                        plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax=y_max, colors='r', linestyles='--', label=line_name)
                         y_tmp = ('%.4f' % line_values[parameters[1]])
                         ss_label = para_name[parameters[1]] + ' = ' + str(y_tmp)
-                        plt.text(line_values[parameters[0]], max_y, ss_label, ha='right', va='top',
-                                 fontdict={'size': 14, 'color': 'black'})
+                        plt.text(line_values[parameters[0]], max_y, ss_label, ha='right',va='top',fontdict={'size': 14, 'color':  'black'})
 
                     plt.title(fileLists[i][j] + '_' + fileLists[i][j], fontdict={'size': 14})
                     if not if_show_rtborder:
@@ -1712,6 +1719,7 @@ def comparison_difmarker_line_train(single_paths, multi_paths, line_paths, param
                         ax.spines['right'].set_visible(False)
                     if if_show_label:
                         plt.legend(prop={'size': 14})
+                    os.makedirs(save_path, exist_ok=True)
                     plt.savefig(save_path + fileLists[i][j] + '.png')
                     plt.close()
 
@@ -1772,12 +1780,10 @@ def comparison_difmarker_line_train(single_paths, multi_paths, line_paths, param
                     if line_name == 'CoDE':
                         line_name = 'learning-to-rank'
                     line_values = line_file.loc[mdatas2[0][i][0]].values.astype('float64').tolist()
-                    plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--',
-                               label=line_name)
+                    plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax=y_max, colors='r', linestyles='--', label=line_name)
                     y_tmp = ('%.4f' % line_values[parameters[1]])
                     ss_label = para_name[parameters[1]] + ' = ' + str(y_tmp)
-                    plt.text(line_values[parameters[0]], y_max, ss_label, ha='right', va='top',
-                             fontdict={'size': 14, 'color': 'black'})
+                    plt.text(line_values[parameters[0]], y_max, ss_label, ha='right',va='top',fontdict={'size': 14, 'color':  'black'})
                 plt.title(mdatas1[0][i][0] + '_' + mdatas1[0][i][0], fontdict={'size': 14})
                 if if_show_label:
                     plt.legend(prop={'size': 14})
@@ -1785,6 +1791,7 @@ def comparison_difmarker_line_train(single_paths, multi_paths, line_paths, param
                     ax = plt.axes()
                     ax.spines['top'].set_visible(False)
                     ax.spines['right'].set_visible(False)
+                os.makedirs(save_path, exist_ok=True)
                 plt.savefig(save_path + mdatas1[0][i][0] + '.png')
                 plt.close()
     elif len(parameters) == 3:
@@ -1801,9 +1808,8 @@ def comparison_difmarker_line_train(single_paths, multi_paths, line_paths, param
 '''
 
 
-def comparison_difmarker_line_test(single_paths, multi_paths, line_paths, parameters, single_names, multi_names,
-                                   line_names, save_path,
-                                   if_show_label=True, if_show_rtborder=True):
+def comparison_difmarker_line_test(single_paths, multi_paths,line_paths, parameters, single_names, multi_names, line_names, save_path,
+                                   if_show_label=True, if_show_rtborder = True):
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
                   7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
@@ -1862,12 +1868,10 @@ def comparison_difmarker_line_test(single_paths, multi_paths, line_paths, parame
                     line_name = 'learning-to-rank'
                 line_values = line_file.loc[fileLists[i][j]].values.astype('float64').tolist()
                 print(fileLists[i][j], line_values[parameters[0]])
-                plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--',
-                           label=line_name)
+                plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax= y_max, colors='r', linestyles='--', label=line_name)
                 y_tmp = ('%.4f' % line_values[parameters[1]])
                 ss_label = para_name[parameters[1]] + ' = ' + str(y_tmp)
-                plt.text(line_values[parameters[0]], y_max, ss_label, ha='right', va='top',
-                         fontdict={'size': 14, 'color': 'black'})
+                plt.text(line_values[parameters[0]], y_max, ss_label, ha='right',va='top',fontdict={'size': 14, 'color':  'black'})
             if not if_show_rtborder:
                 ax = plt.axes()
                 ax.spines['top'].set_visible(False)
@@ -1875,13 +1879,12 @@ def comparison_difmarker_line_test(single_paths, multi_paths, line_paths, parame
             plt.title(fileLists[i][j - 1] + '_' + fileLists[i][j], fontdict={'size': 14})
             if if_show_label:
                 plt.legend(prop={'size': 14})
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + fileLists[i][j - 1] + '_' + fileLists[i][j] + '.png')
             plt.close()
 
-
-def combine_difmarker_line_train(single_paths, multi_paths, line_paths, parameters, single_names, multi_names, rows,
-                                 columns,
-                                 line_names, save_path, if_show_label, if_show_rtborder=True):
+def combine_difmarker_line_train(single_paths, multi_paths, line_paths, parameters, single_names, multi_names,rows, columns,
+                                    line_names, save_path,if_show_label, if_show_rtborder = True):
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
                   7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
@@ -1932,18 +1935,16 @@ def combine_difmarker_line_train(single_paths, multi_paths, line_paths, paramete
                     for line_file, line_name in zip(line_files, line_names):
                         if line_name == 'CoDE':
                             line_name = 'learning-to-rank'
-
+                        
                         line_values = line_file.loc[fileLists[i][j]].values.astype('float64').tolist()
                         if if_show_label:
-                            plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--',
-                                       label=line_name)
+                            plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax=y_max, colors='r', linestyles='--', label=line_name)
                         else:
-                            plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--')
-
+                            plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax=y_max, colors='r', linestyles='--')
+                        
                         y_tmp = ('%.4f' % line_values[parameters[1]])
                         ss_label = para_name[parameters[1]] + ' = ' + str(y_tmp)
-                        plt.text(line_values[parameters[0]], max_y, ss_label, ha='right', va='top',
-                                 fontdict={'size': 14, 'color': 'black'})
+                        plt.text(line_values[parameters[0]], max_y, ss_label, ha='right',va='top',fontdict={'size': 14, 'color':  'black'})
 
                     plt.title(fileLists[i][j] + '_' + fileLists[i][j], fontdict={'size': 14})
             if not if_show_rtborder:
@@ -1952,6 +1953,7 @@ def combine_difmarker_line_train(single_paths, multi_paths, line_paths, paramete
                 ax.spines['right'].set_visible(False)
             if if_show_label:
                 plt.legend(prop={'size': 14})
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + 'train.png')
             plt.close()
 
@@ -2017,14 +2019,12 @@ def combine_difmarker_line_train(single_paths, multi_paths, line_paths, paramete
                         line_name = 'learning-to-rank'
                     line_values = line_file.loc[mdatas2[0][i][0]].values.astype('float64').tolist()
                     if if_show_label:
-                        plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--',
-                                   label=line_name)
+                        plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax=y_max, colors='r', linestyles='--', label=line_name)
                     else:
-                        plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--')
+                        plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax=y_max, colors='r', linestyles='--') 
                     y_tmp = ('%.4f' % line_values[parameters[1]])
                     ss_label = para_name[parameters[1]] + ' = ' + str(y_tmp)
-                    plt.text(line_values[parameters[0]], y_max, ss_label, ha='right', va='top',
-                             fontdict={'size': 14, 'color': 'black'})
+                    plt.text(line_values[parameters[0]], y_max, ss_label, ha='right',va='top',fontdict={'size': 14, 'color':  'black'})
                 plt.title(mdatas1[0][i][0] + '_' + mdatas1[0][i][0], fontdict={'size': 14})
             if if_show_label:
                 plt.legend(prop={'size': 14})
@@ -2032,6 +2032,7 @@ def combine_difmarker_line_train(single_paths, multi_paths, line_paths, paramete
                 ax = plt.axes()
                 ax.spines['top'].set_visible(False)
                 ax.spines['right'].set_visible(False)
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + 'train.png')
             plt.close()
     elif len(parameters) == 3:
@@ -2048,9 +2049,8 @@ def combine_difmarker_line_train(single_paths, multi_paths, line_paths, paramete
 '''
 
 
-def combine_difmarker_line_test(single_paths, multi_paths, line_paths, parameters, single_names, multi_names,
-                                line_names, save_path, rows, columns,
-                                if_show_label, if_show_rtborder=True):
+def combine_difmarker_line_test(single_paths, multi_paths,line_paths, parameters, single_names, multi_names, line_names, save_path, rows, columns,
+                                   if_show_label, if_show_rtborder = True):
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
                   7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
@@ -2113,27 +2113,26 @@ def combine_difmarker_line_test(single_paths, multi_paths, line_paths, parameter
                 line_values = line_file.loc[fileLists[i][j]].values.astype('float64').tolist()
                 print(fileLists[i][j], line_values[parameters[0]])
                 if if_show_label:
-                    plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--',
-                               label=line_name)
+                    plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax= y_max, colors='r', linestyles='--', label=line_name)
                 else:
-                    plt.vlines(x=line_values[parameters[0]], ymin=0, ymax=y_max, colors='r', linestyles='--')
+                    plt.vlines(x=line_values[parameters[0]], ymin= 0, ymax= y_max, colors='r', linestyles='--')
                 y_tmp = ('%.4f' % line_values[parameters[1]])
                 ss_label = para_name[parameters[1]] + ' = ' + str(y_tmp)
-                plt.text(line_values[parameters[0]], y_max, ss_label, ha='right', va='top',
-                         fontdict={'size': 14, 'color': 'black'})
+                plt.text(line_values[parameters[0]], y_max, ss_label, ha='right',va='top',fontdict={'size': 14, 'color':  'black'})
             plt.title(fileLists[i][j - 1] + '_' + fileLists[i][j], fontdict={'size': 14})
     if not if_show_rtborder:
-        ax = plt.axes()
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
+            ax = plt.axes()
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
     if if_show_label:
         plt.legend(prop={'size': 14})
+    os.makedirs(save_path, exist_ok=True)
     plt.savefig(save_path + 'test.png')
     plt.close()
 
 
-def comparison_difmarker_log04_train(single_paths, multi_paths, single_names, multi_names, save_path, msize, wsize,
-                                     figsize, if_show_label=True):
+    
+def comparison_difmarker_log04_train(single_paths, multi_paths,single_names, multi_names, save_path, msize, wsize,figsize, if_show_label=True):
     parameters = [0, 4]
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
@@ -2158,7 +2157,7 @@ def comparison_difmarker_log04_train(single_paths, multi_paths, single_names, mu
                 single_marker = 0
                 plt.figure(figsize=(figsize[0], figsize[1]))
                 plt.xlabel(para_name[parameters[0]], fontdict={'size': wsize[0]})
-                plt.ylabel('ln(' + para_name[parameters[1]] + ')', fontdict={'size': wsize[0]})
+                plt.ylabel('ln('+para_name[parameters[1]]+')', fontdict={'size': wsize[0]})
                 for single_file, single_name in zip(single_files, single_names):
                     if single_name == 'CoDE':
                         single_name = 'learning-to-rank'
@@ -2168,16 +2167,17 @@ def comparison_difmarker_log04_train(single_paths, multi_paths, single_names, mu
                     log_mses = math.log(mses)
                     if if_show_label:
                         plt.plot(fpas, log_mses,
-                                 single_marker_dict[single_marker], label=single_name, markersize=msize[0])
+                                    single_marker_dict[single_marker], label=single_name, markersize=msize[0])
                     else:
                         plt.plot(fpas, log_mses,
-                                 single_marker_dict[single_marker], markersize=msize[0])
+                                    single_marker_dict[single_marker], markersize=msize[0])
                         print(single_marker_dict[single_marker], single_name)
                     single_marker += 1
                 plt.title(fileLists[i][j] + '_' + fileLists[i][j], fontdict={'size': wsize[1]})
                 if if_show_label:
                     plt.legend(prop={'size': wsize[2]})
                 plt.tick_params(labelsize=wsize[3])
+                os.makedirs(save_path, exist_ok=True)
                 plt.savefig(save_path + fileLists[i][j] + '.png')
                 plt.close()
 
@@ -2206,14 +2206,14 @@ def comparison_difmarker_log04_train(single_paths, multi_paths, single_names, mu
 
             plt.figure(figsize=(figsize[0], figsize[1]))
             plt.xlabel(para_name[parameters[0]], fontdict={'size': wsize[0]})
-            plt.ylabel('ln(' + para_name[parameters[1]] + ')', fontdict={'size': wsize[0]})
+            plt.ylabel('ln('+para_name[parameters[1]]+')', fontdict={'size': wsize[0]})
 
             for mdata1, mdata2, multi_name in zip(mdatas1, mdatas2, multi_names):
                 m_x = list(map(lambda x: float(x), mdata1[i][1:]))
                 m_y = list(map(lambda x: float(x), mdata2[i][1:]))
                 log_m_y = [math.log(tmp) for tmp in m_y]
                 if multi_name == 'CoDE':
-                    multi_name = 'learning-to-rank'
+                        multi_name = 'learning-to-rank'
                 if if_show_label:
                     plt.plot(m_x, log_m_y, multi_marker_dict[multi_marker], label=multi_name, markersize=msize[1])
                 else:
@@ -2240,6 +2240,7 @@ def comparison_difmarker_log04_train(single_paths, multi_paths, single_names, mu
             if if_show_label:
                 plt.legend(prop={'size': wsize[2]})
             plt.tick_params(labelsize=wsize[3])
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + mdatas1[0][i][0] + '.png')
             plt.close()
 
@@ -2254,8 +2255,7 @@ def comparison_difmarker_log04_train(single_paths, multi_paths, single_names, mu
 '''
 
 
-def comparison_difmarker_log04_test(single_paths, multi_paths, single_names, multi_names, save_path, wsize, msize,
-                                    figsize, if_show_label=True):
+def comparison_difmarker_log04_test(single_paths, multi_paths, single_names, multi_names, save_path, wsize, msize, figsize, if_show_label=True):
     parameters = [0, 4]
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
     color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
@@ -2266,24 +2266,24 @@ def comparison_difmarker_log04_test(single_paths, multi_paths, single_names, mul
     single_files = []
     for single_path in single_paths:
         single_files.append(pd.read_csv(single_path + 'doc1.csv', header=0, index_col=0))
-    # single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
+    #single_file = pd.read_csv(single_path + 'doc5.csv', header=0, index_col=0)
     fileLists = dictionaries.get_filelists()
     for i in range(len(fileLists)):
         for j in range(2, len(fileLists[i])):
             plt.figure(figsize=(figsize[0], figsize[1]))
             plt.xlabel(para_name[parameters[0]], fontdict={'size': wsize[0]})
-            plt.ylabel('ln(' + para_name[parameters[1]] + ')', fontdict={'size': wsize[0]})
+            plt.ylabel('ln('+para_name[parameters[1]]+')', fontdict={'size': wsize[0]})
 
             single_marker = 0
             multi_marker = 0
 
             for multi_path, multi_name in zip(multi_paths, multi_names):
                 if multi_name == 'CoDE':
-                    multi_name = 'learning-to-rank'
+                        multi_name = 'learning-to-rank'
                 m_file = pd.read_csv(multi_path + fileLists[i][j] + '.csv', header=1, index_col=1)
                 write_name = multi_name.replace('nonz', 'NNZ')
                 fpas = m_file[para_name[parameters[0]]].values
-                mses = m_file[para_name[parameters[1]]].values
+                mses =  m_file[para_name[parameters[1]]].values
                 log_mses = [math.log(tmp) for tmp in mses]
                 if if_show_label:
                     plt.plot(fpas, log_mses,
@@ -2301,10 +2301,10 @@ def comparison_difmarker_log04_test(single_paths, multi_paths, single_names, mul
                 mses = single_file.loc[fileLists[i][j], para_name[parameters[1]]]
                 log_mses = math.log(mses)
                 if if_show_label:
-                    plt.plot(fpas, log_mses,
+                    plt.plot(fpas,log_mses ,
                              single_marker_dict[single_marker], label=single_name, ms=msize[0])
                 else:
-                    plt.plot(fpas, log_mses, single_marker_dict[single_marker], ms=msize[0])
+                    plt.plot(fpas,log_mses, single_marker_dict[single_marker], ms=msize[0])
                     print(single_marker_dict[single_marker], single_name)
                 single_marker += 1
 
@@ -2312,5 +2312,6 @@ def comparison_difmarker_log04_test(single_paths, multi_paths, single_names, mul
             if if_show_label:
                 plt.legend(prop={'size': wsize[2]})
             plt.tick_params(labelsize=wsize[3])
+            os.makedirs(save_path, exist_ok=True)
             plt.savefig(save_path + fileLists[i][j - 1] + '_' + fileLists[i][j] + '.png')
             plt.close()
