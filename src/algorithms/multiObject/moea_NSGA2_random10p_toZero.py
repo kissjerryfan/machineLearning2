@@ -8,7 +8,7 @@ import sys
 sys.path.append('..')
 paths.append(path.split(path.split(path.realpath(__file__))[0])[0])
 
-import algorithms
+from src.utils import algorithms
 
 class moea_NSGA2_random10p_toZero(ea.MoeaAlgorithm):
     """

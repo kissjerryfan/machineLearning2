@@ -2,7 +2,7 @@ import geatpy as ea
 import random
 import sys
 sys.path.append('..')
-import algorithms
+from src.utils import algorithms
 
 
 class CoDE_20p_toZero(ea.SoeaAlgorithm):

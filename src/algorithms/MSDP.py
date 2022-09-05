@@ -37,7 +37,7 @@ class MSDP:
     def __init__(self, X, y, target, model, l, u, drawing=1, maxgen=100, moea=1):
 
         '''===============================实例化问题对象=================================='''
-        self.problem = MyProblem(target=target, X=X, y=y, model=model, l=l, u=u)
+        self.problem = MyProblem.MyProblem(target=target, X=X, y=y, model=model, l=l, u=u)
 
         '''===========================种群设置=============================='''
 

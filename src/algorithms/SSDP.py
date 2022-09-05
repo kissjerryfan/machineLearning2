@@ -11,7 +11,7 @@ from src.algorithms.singleObject.CoDE_random30p_toZero import CoDE_random30p_toZ
 import sys
 
 sys.path.append('..')
-from src.utils.MyProblem import MyProblem
+from src.utils import MyProblem
 import geatpy as ea
 import numpy as np
 
@@ -37,7 +37,7 @@ class SSDP:
         '''初始化必要的相关参数'''
 
         '''===============================实例化问题对象=================================='''
-        self.problem = MyProblem(target=[0], X=X, y=y, model=model, l=l, u=u)
+        self.problem = MyProblem.MyProblem(target=[0], X=X, y=y, model=model, l=l, u=u)
 
         '''===========================种群设置=============================='''
         self.model = model

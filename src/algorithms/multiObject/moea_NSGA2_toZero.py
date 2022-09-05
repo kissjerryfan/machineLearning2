@@ -3,7 +3,7 @@ import numpy as np
 import geatpy as ea  # 导入geatpy库
 from sys import path as paths
 from os import path
-import algorithms
+from src.utils import algorithms
 paths.append(path.split(path.split(path.realpath(__file__))[0])[0])
 
 
