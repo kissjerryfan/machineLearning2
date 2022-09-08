@@ -31,62 +31,62 @@ def plotting_ssmm_train(moea_list, sklearn_list, soea_list, target):
     target_name = dictionaries.get_target_composition(target)
     multi_paths = []
     for moea_name in moea_names:
-        multi_paths.append('../../results/linear/' + moea_name + '/' + target_name + '/train/')
+        multi_paths.append('../results/multiObject/linear/' + moea_name + '/' + target_name + '/train/')
     single_paths = []
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/train/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/train/')
     for soea_name in soea_names:
-        single_paths.append('../../results/linear/' + soea_name + '/' + '/train/')
+        single_paths.append('../results/singleObject/linear/' + soea_name + '/train/')
     single_names = sklearn_names +soea_names
-    save_path = '../../results/plotting/all/' + target_name + '/train/'
+    save_path = '../results/plotting/all/' + target_name + '/train/'
     helpers.comparison_ssmm_train(single_paths=single_paths, multi_paths=multi_paths, parameters=target,
                                   single_names=single_names, multi_names=moea_names, save_path=save_path)
 
 def plotting_ssmm_test(moea_list, sklearn_list, soea_list, target):
     moea_names = []
     for i in moea_list:
-        moea_names.append(helpers.get_moea_name(i))
+        moea_names.append(dictionaries.get_moea_name(i))
     sklearn_names = []
     for i in sklearn_list:
-        sklearn_names.append(helpers.get_sklearn_name(i))
+        sklearn_names.append(dictionaries.get_sklearn_name(i))
     soea_names = []
     for i in soea_list:
-        soea_names.append(helpers.get_soea_name(i))
-    target_name = helpers.get_target_composition(target)
+        soea_names.append(dictionaries.get_soea_name(i))
+    target_name = dictionaries.get_target_composition(target)
     multi_paths = []
     for moea_name in moea_names:
-        multi_paths.append('../../results/linear/' + moea_name + '/' + target_name + '/test/')
+        multi_paths.append('../results/multiObject/linear/' + moea_name + '/' + target_name + '/')
     single_paths = []
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/test/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/')
     for soea_name in soea_names:
-        single_paths.append('../../results/linear/' + soea_name + '/' + '/test/')
+        single_paths.append('../results/singleObject/linear/' + soea_name + '/')
     single_names = sklearn_names +soea_names
-    save_path = '../../results/plotting/all/' + target_name + '/test/'
+    save_path = '../results/plotting/all/' + target_name + '/test/'
     helpers.comparison_ssmm_test(single_paths=single_paths, multi_paths=multi_paths, parameters=target,
                                   single_names=single_names, multi_names=moea_names, save_path=save_path)
 
 def plotting_ssmm_train_test(moea_list, sklearn_list, soea_list, target):
     moea_names = []
     for i in moea_list:
-        moea_names.append(helpers.get_moea_name(i))
+        moea_names.append(dictionaries.get_moea_name(i))
     sklearn_names = []
     for i in sklearn_list:
-        sklearn_names.append(helpers.get_sklearn_name(i))
+        sklearn_names.append(dictionaries.get_sklearn_name(i))
     soea_names = []
     for i in soea_list:
-        soea_names.append(helpers.get_soea_name(i))
-    target_name = helpers.get_target_composition(target)
+        soea_names.append(dictionaries.get_soea_name(i))
+    target_name = dictionaries.get_target_composition(target)
     multi_paths = []
     for moea_name in moea_names:
-        multi_paths.append('../../results/linear/' + moea_name + '/' + target_name + '/')
+        multi_paths.append('../results/multiObject/linear/' + moea_name + '/' + target_name + '/')
     single_paths = []
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/')
     for soea_name in soea_names:
-        single_paths.append('../../results/linear/' + soea_name + '/')
+        single_paths.append('../results/singleObject/linear/' + soea_name + '/')
     single_names = sklearn_names +soea_names
-    save_path = '../../results/plotting/all/' + target_name + '/train-test/'
+    save_path = '../results/plotting/all/' + target_name + '/train-test/'
     helpers.comparison_ssmm_train_test(single_paths=single_paths, multi_paths=multi_paths, parameters=target,
                                   single_names=single_names, multi_names=moea_names, save_path=save_path)
 
@@ -129,26 +129,26 @@ def plotting_mix_ssmm_train(moea_list, sklearn_list, soea_list, op_targets , tar
     multi_names = []
     for moea_name in moea_names:
         for op_target_name in op_target_names:
-            multi_paths.append('../../results/multi-objective/' + moea_name + '/' + op_target_name + '/train/')
+            multi_paths.append('../results/multiObject/' + moea_name + '/' + op_target_name + '/train/')
             if type == 1:
-                write_algorithm = moea_name.replace('nsga2_toZero', 'multi-objective-revised')
-                write_algorithm = write_algorithm.replace('nsga2', 'multi-objective')
+                write_algorithm = moea_name.replace('nsga2_toZero', 'multiObject-revised')
+                write_algorithm = write_algorithm.replace('nsga2', 'multiObject')
                 # if moea_name == 'nsga2':
-                #     write_algorithm = 'multi-objective'
+                #     write_algorithm = 'multiObject'
                 # elif moea_name == 'nsga2_toZero':
-                #     write_algorithm = 'multi-objective-revised'
+                #     write_algorithm = 'multiObject-revised'
             else:
                 write_algorithm = moea_name
             write_target = op_target_name.replace('nonz', 'NNZ')
             multi_names.append(write_algorithm + '/' + write_target)
     single_paths = []
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/train/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/train/')
     for soea_name in soea_names:
-        single_paths.append('../../results/single-objective/' + soea_name  + '/train/')
+        single_paths.append('../results/singleObject/' + soea_name  + '/train/')
     single_names = sklearn_names +soea_names
     target_name = dictionaries.get_target_composition(target)
-    save_path = '../../results/plotting/' + save_folder+'/' + target_name + '/train/'
+    save_path = '../results/plotting/' + save_folder+'/' + target_name + '/train/'
     if color:
         helpers.comparison_difcolor_ssmm_train(single_paths=single_paths, multi_paths=multi_paths, parameters=target,
                                   single_names=single_names, multi_names=multi_names, save_path=save_path)
@@ -174,26 +174,26 @@ def plotting_mix_ssmm_test(moea_list, sklearn_list, soea_list, op_targets, targe
     multi_names = []
     for moea_name in moea_names:
         for op_target_name in op_target_names:
-            multi_paths.append('../../results/multi-objective/' + moea_name + '/' + op_target_name + '/test/')
+            multi_paths.append('../results/multiObject/' + moea_name + '/' + op_target_name + '/test/')
             if type == 1:
-                write_algorithm = moea_name.replace('nsga2_toZero', 'multi-objective-revised')
-                write_algorithm = write_algorithm.replace('nsga2', 'multi-objective')
+                write_algorithm = moea_name.replace('nsga2_toZero', 'multiObject-revised')
+                write_algorithm = write_algorithm.replace('nsga2', 'multiObject')
                 # if moea_name == 'nsga2':
-                #     write_algorithm = 'multi-objective'
+                #     write_algorithm = 'multiObject'
                 # elif moea_name == 'nsga2_toZero':
-                #     write_algorithm = 'multi-objective-revised'
+                #     write_algorithm = 'multiObject-revised'
             else:
                 write_algorithm = moea_name
             write_target = op_target_name.replace('nonz', 'NNZ')
             multi_names.append(write_algorithm + '/' + write_target)
     single_paths = []
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/test/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/test/')
     for soea_name in soea_names:
-        single_paths.append('../../results/single-objective/' + soea_name + '/test/')
+        single_paths.append('../results/singleObject/' + soea_name + '/test/')
     single_names = sklearn_names + soea_names
     target_name = dictionaries.get_target_composition(target)
-    save_path = '../../results/plotting/' + save_folder +'/'+ target_name + '/test/'
+    save_path = '../results/plotting/' + save_folder +'/'+ target_name + '/test/'
     if color:
         helpers.comparison_difcolor_ssmm_test(single_paths=single_paths, multi_paths=multi_paths, parameters=target,
                                   single_names=single_names, multi_names=multi_names, save_path=save_path)
@@ -217,14 +217,14 @@ def plotting_universal_train(moea_list, sklearn_list, soea_list, target, line_li
         moea_method = dictionaries.get_model_method_name(moea[0])
         moea_name = dictionaries.get_moea_name(moea[1])
         op_target_name = dictionaries.get_target_composition(moea[2])
-        multi_paths.append('../../results/multi-objective/' +moea_method + '/'+ moea_name + '/' + op_target_name + '/train/')
+        multi_paths.append('../results/multiObject/' +moea_method + '/'+ moea_name + '/' + op_target_name + '/train/')
         if type == 1:
             write_algorithm = moea_name.replace('nsga2_random20p_toZero', 'revised_NSGA_II')
             write_algorithm = write_algorithm.replace('nsga2', 'NSGA_II')
             # if moea_name == 'nsga2':
-            #     write_algorithm = 'multi-objective'
+            #     write_algorithm = 'multiObject'
             # elif moea_name == 'nsga2_toZero':
-            #     write_algorithm = 'multi-objective-revised'
+            #     write_algorithm = 'multiObject-revised'
         else:
             write_algorithm = moea_name
         write_target = op_target_name.replace('nonz', 'NNZ')
@@ -240,7 +240,7 @@ def plotting_universal_train(moea_list, sklearn_list, soea_list, target, line_li
     for i in sklearn_list:
         sklearn_names.append(dictionaries.get_sklearn_name(i))
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/train/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/train/')
     
     soea_names = []
     soea_methods = []
@@ -249,12 +249,12 @@ def plotting_universal_train(moea_list, sklearn_list, soea_list, target, line_li
         soea_names.append(dictionaries.get_soea_name(soea[1]))
     if if_sM:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            multi_paths.append('../../results/multi-objective/' + soea_method + '/'+soea_name  + '/train/')
+            multi_paths.append('../results/multiObject/' + soea_method + '/'+soea_name  + '/train/')
         multi_names = multi_names + soea_names
         single_names = sklearn_names
     else:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            single_paths.append('../../results/single-objective/' + soea_method + '/'+ soea_name  + '/train/')
+            single_paths.append('../results/singleObject/' + soea_method + '/'+ soea_name  + '/train/')
         single_names = sklearn_names +soea_names
     
     line_names = []
@@ -262,10 +262,10 @@ def plotting_universal_train(moea_list, sklearn_list, soea_list, target, line_li
         line_names.append(dictionaries.get_model_method_name(line[0]) + '/' + dictionaries.get_soea_name(line[1]))
     line_paths = []
     for line_name in line_names:
-        line_paths.append('../../results/single-objective/' + line_name + '/train/')
+        line_paths.append('../results/singleObject/' + line_name + '/train/')
 
     target_name = dictionaries.get_target_composition(target)
-    save_path = '../../results/plotting/' + save_folder+'/' + target_name + '/train/'
+    save_path = '../results/plotting/' + save_folder+'/' + target_name + '/train/'
     print(multi_names, multi_paths)
     print(single_names, single_paths)
     if if_combine:
@@ -297,14 +297,14 @@ def plotting_universal_test(moea_list, sklearn_list, soea_list, target, line_lis
         moea_method = dictionaries.get_model_method_name(moea[0])
         moea_name = dictionaries.get_moea_name(moea[1])
         op_target_name = dictionaries.get_target_composition(moea[2])
-        multi_paths.append('../../results/multi-objective/' + moea_method + '/'+ moea_name + '/' + op_target_name + '/test/')
+        multi_paths.append('../results/multiObject/' + moea_method + '/'+ moea_name + '/' + op_target_name + '/test/')
         if type == 1:
             write_algorithm = moea_name.replace('nsga2_random20p_toZero', 'revised_NSGA_II')
             write_algorithm = write_algorithm.replace('nsga2', 'NSGA_II')
             # if moea_name == 'nsga2':
-            #     write_algorithm = 'multi-objective'
+            #     write_algorithm = 'multiObject'
             # elif moea_name == 'nsga2_toZero':
-            #     write_algorithm = 'multi-objective-revised'
+            #     write_algorithm = 'multiObject-revised'
         else:
             write_algorithm = moea_name
         write_target = op_target_name.replace('nonz', 'NNZ')
@@ -320,7 +320,7 @@ def plotting_universal_test(moea_list, sklearn_list, soea_list, target, line_lis
     for i in sklearn_list:
         sklearn_names.append(dictionaries.get_sklearn_name(i))
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/test/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/test/')
     
     soea_names = []
     soea_methods = []
@@ -329,12 +329,12 @@ def plotting_universal_test(moea_list, sklearn_list, soea_list, target, line_lis
         soea_names.append(dictionaries.get_soea_name(soea[1]))
     if if_sM:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            multi_paths.append('../../results/multi-objective/' + soea_method + '/'+soea_name  + '/test/')
+            multi_paths.append('../results/multiObject/' + soea_method + '/'+soea_name  + '/test/')
         multi_names = multi_names + soea_names
         single_names = sklearn_names
     else:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            single_paths.append('../../results/single-objective/' + soea_method + '/'+ soea_name  + '/test/')
+            single_paths.append('../results/singleObject/' + soea_method + '/'+ soea_name  + '/test/')
         single_names = sklearn_names +soea_names
 
     line_names = []
@@ -342,10 +342,10 @@ def plotting_universal_test(moea_list, sklearn_list, soea_list, target, line_lis
         line_names.append(dictionaries.get_model_method_name(line[0]) + '/' + dictionaries.get_soea_name(line[1]))
     line_paths = []
     for line_name in line_names:
-        line_paths.append('../../results/single-objective/' + line_name + '/test/')
+        line_paths.append('../results/singleObject/' + line_name + '/test/')
     single_names = sklearn_names + soea_names
     target_name = dictionaries.get_target_composition(target)
-    save_path = '../../results/plotting/' + save_folder +'/'+ target_name + '/test/'
+    save_path = '../results/plotting/' + save_folder +'/'+ target_name + '/test/'
     if if_combine:
          helpers.combine_difmarker_line_test(single_paths=single_paths, multi_paths=multi_paths,
                                                line_paths=line_paths, parameters=target,
@@ -378,14 +378,14 @@ def plotting_universal_log04_train(moea_list, sklearn_list, soea_list, type = 2,
         model_method =  dictionaries.get_model_method_name(moea[0])
         moea_name = dictionaries.get_moea_name(moea[1])
         op_target_name = dictionaries.get_target_composition(moea[2])
-        multi_paths.append('../../results/multi-objective/' +model_method+'/'+moea_name + '/' + op_target_name + '/train/')
+        multi_paths.append('../results/multiObject/' +model_method+'/'+moea_name + '/' + op_target_name + '/train/')
         if type == 1:
             write_algorithm = moea_name.replace('nsga2_random20p_toZero', 'revised_NSGA_II')
             write_algorithm = write_algorithm.replace('nsga2', 'NSGA_II')
             # if moea_name == 'nsga2':
-            #     write_algorithm = 'multi-objective'
+            #     write_algorithm = 'multiObject'
             # elif moea_name == 'nsga2_toZero':
-            #     write_algorithm = 'multi-objective-revised'
+            #     write_algorithm = 'multiObject-revised'
         else:
             write_algorithm = moea_name
         write_target = op_target_name.replace('nonz', 'NNZ')
@@ -400,7 +400,7 @@ def plotting_universal_log04_train(moea_list, sklearn_list, soea_list, type = 2,
     for i in sklearn_list:
         sklearn_names.append(dictionaries.get_sklearn_name(i))
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/train/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/train/')
     
     soea_names = []
     soea_methods = []
@@ -409,15 +409,15 @@ def plotting_universal_log04_train(moea_list, sklearn_list, soea_list, type = 2,
         soea_names.append(dictionaries.get_soea_name(soea[1]))
     if if_sM:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            multi_paths.append('../../results/multi-objective/' + soea_method + '/'+soea_name  + '/train/')
+            multi_paths.append('../results/multiObject/' + soea_method + '/'+soea_name  + '/train/')
         multi_names = multi_names + soea_names
         single_names = sklearn_names
     else:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            single_paths.append('../../results/single-objective/' + soea_method + '/'+ soea_name  + '/train/')
+            single_paths.append('../results/singleObject/' + soea_method + '/'+ soea_name  + '/train/')
         single_names = sklearn_names +soea_names
 
-    save_path = '../../results/plotting/' + save_folder+'/train/'
+    save_path = '../results/plotting/' + save_folder+'/train/'
     print(multi_names, multi_paths)
     print(single_names, single_paths)
 
@@ -433,14 +433,14 @@ def plotting_universal_log04_test(moea_list, sklearn_list, soea_list, type = 2, 
         model_method =  dictionaries.get_model_method_name(moea[0])
         moea_name = dictionaries.get_moea_name(moea[1])
         op_target_name = dictionaries.get_target_composition(moea[2])
-        multi_paths.append('../../results/multi-objective/' +model_method+'/'+moea_name + '/' + op_target_name + '/test/')
+        multi_paths.append('../results/multiObject/' +model_method+'/'+moea_name + '/' + op_target_name + '/test/')
         if type == 1:
             write_algorithm = moea_name.replace('nsga2_random20p_toZero', 'revised_NSGA_II')
             write_algorithm = write_algorithm.replace('nsga2', 'NSGA_II')
             # if moea_name == 'nsga2':
-            #     write_algorithm = 'multi-objective'
+            #     write_algorithm = 'multiObject'
             # elif moea_name == 'nsga2_toZero':
-            #     write_algorithm = 'multi-objective-revised'
+            #     write_algorithm = 'multiObject-revised'
         else:
             write_algorithm = moea_name
         write_target = op_target_name.replace('nonz', 'NNZ')
@@ -454,7 +454,7 @@ def plotting_universal_log04_test(moea_list, sklearn_list, soea_list, type = 2, 
     for i in sklearn_list:
         sklearn_names.append(dictionaries.get_sklearn_name(i))
     for sklearn_name in sklearn_names:
-        single_paths.append('../../results/compared_algorithms/' + sklearn_name + '/test/')
+        single_paths.append('../results/comparedAlgorithms/' + sklearn_name + '/test/')
     
     soea_names = []
     soea_methods = []
@@ -463,15 +463,15 @@ def plotting_universal_log04_test(moea_list, sklearn_list, soea_list, type = 2, 
         soea_names.append(dictionaries.get_soea_name(soea[1]))
     if if_sM:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            multi_paths.append('../../results/multi-objective/' + soea_method + '/'+soea_name  + '/test/')
+            multi_paths.append('../results/multiObject/' + soea_method + '/'+soea_name  + '/test/')
         multi_names = multi_names + soea_names
         single_names = sklearn_names
     else:
         for soea_name, soea_method in zip(soea_names, soea_methods):
-            single_paths.append('../../results/single-objective/' + soea_method + '/'+ soea_name  + '/test/')
+            single_paths.append('../results/singleObject/' + soea_method + '/'+ soea_name  + '/test/')
         single_names = sklearn_names +soea_names
 
-    save_path = '../../results/plotting/' + save_folder+'/test/'
+    save_path = '../results/plotting/' + save_folder+'/test/'
     print(multi_names, multi_paths)
     print(single_names, single_paths)
 
@@ -493,64 +493,64 @@ def plotting_universal_log04_test(moea_list, sklearn_list, soea_list, type = 2, 
 
 # 【linearRegression】和【linear-多目标-FPA-AAE-NSGA2】的对比
 def run_sm_LR_fpa_aae_NSGA2_train():
-    single_path = '../../results/compared_algorithms/' + 'LinearRegression' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
+    single_path = '../results/comparedAlgorithms/' + 'LinearRegression' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
     parameters = [0, 1]
     single_name = 'LinearRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'LinearRegressionvs多目标_FPA_AAE_NSGA2' + '/train/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'LinearRegressionvs多目标_FPA_AAE_NSGA2' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_LR_fpa_aae_NSGA2_test():
-    single_path = '../../results/compared_algorithms/' + 'LinearRegression' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
+    single_path = '../results/comparedAlgorithms/' + 'LinearRegression' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
     parameters = [0, 1]
     single_name = 'LinearRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'LinearRegressionvs多目标_FPA_AAE_NSGA2' + '/test/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'LinearRegressionvs多目标_FPA_AAE_NSGA2' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_LR_fpa_aae_NSGA2_train_test():
-    single_path = '../../results/compared_algorithms/' + 'LinearRegression/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
+    single_path = '../results/comparedAlgorithms/' + 'LinearRegression/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
     parameters = [0, 1]
     single_name = 'LinearRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'LinearRegressionvs多目标_FPA_AAE_NSGA2' + '/train-test/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'LinearRegressionvs多目标_FPA_AAE_NSGA2' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 
 # 【RidgeRegression】和【linear-多目标-FPA-AAE-NSGA2】的对比
 def run_sm_RR_fpa_aae_NSGA2_train():
-    single_path = '../../results/compared_algorithms/' + 'RidgeRegression' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
+    single_path = '../results/comparedAlgorithms/' + 'RidgeRegression' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
     parameters = [0, 1]
     single_name = 'RidgeRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'RidgeRegressionvs多目标_FPA_AAE_NSGA2' + '/train/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'RidgeRegressionvs多目标_FPA_AAE_NSGA2' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_RR_fpa_aae_NSGA2_test():
-    single_path = '../../results/compared_algorithms/' + 'RidgeRegression' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
+    single_path = '../results/comparedAlgorithms/' + 'RidgeRegression' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
     parameters = [0, 1]
     single_name = 'RidgeRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'RidgeRegressionvs多目标_FPA_AAE_NSGA2' + '/test/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'RidgeRegressionvs多目标_FPA_AAE_NSGA2' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_RR_fpa_aae_NSGA2_train_test():
-    single_path = '../../results/compared_algorithms/' + 'RidgeRegression/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
+    single_path = '../results/comparedAlgorithms/' + 'RidgeRegression/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
     parameters = [0, 1]
     single_name = 'RidgeRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'RidgeRegressionvs多目标_FPA_AAE_NSGA2' + '/train-test/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'RidgeRegressionvs多目标_FPA_AAE_NSGA2' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -558,32 +558,32 @@ def run_sm_RR_fpa_aae_NSGA2_train_test():
 
 # 【linear-单目标-CoDE】和【linear-多目标-FPA-AAE-NSGA2】的对比
 def run_sm_fpa_aae_CoDE_NSGA2_train():
-    single_path = '../../results/linear/' + '单目标优化_CoDE' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
+    single_path = '../results/linear/' + '单目标优化_CoDE' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_AAE_NSGA2' + '/train/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_AAE_NSGA2' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_aae_CoDE_NSGA2_test():
-    single_path = '../../results/linear/' + '单目标优化_CoDE' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
+    single_path = '../results/linear/' + '单目标优化_CoDE' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_AAE_NSGA2' + '/test/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_AAE_NSGA2' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_aae_CoDE_NSGA2_train_test():
-    single_path = '../../results/linear/' + '单目标优化_CoDE/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
+    single_path = '../results/linear/' + '单目标优化_CoDE/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_AAE_NSGA2' + '/train-test/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_AAE_NSGA2' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -591,32 +591,32 @@ def run_sm_fpa_aae_CoDE_NSGA2_train_test():
 
 # 【linear-单目标-CoDE】和【linear-多目标-FPA-nonz-NSGA2-toZero】的对比
 def run_sm_fpa_nonz_CoDE_NSGA2_toZero_train():
-    single_path = '../../results/linear/' + '单目标优化_CoDE' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/train/'
+    single_path = '../results/linear/' + '单目标优化_CoDE' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/train/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_toZero' + '/train/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_toZero' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_nonz_CoDE_NSGA2_toZero_test():
-    single_path = '../../results/linear/' + '单目标优化_CoDE' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/test/'
+    single_path = '../results/linear/' + '单目标优化_CoDE' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/test/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_toZero' + '/test/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_toZero' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_nonz_CoDE_NSGA2_toZero_train_test():
-    single_path = '../../results/linear/' + '单目标优化_CoDE/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero/'
+    single_path = '../results/linear/' + '单目标优化_CoDE/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_toZero' + '/train-test/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_toZero' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -624,34 +624,34 @@ def run_sm_fpa_nonz_CoDE_NSGA2_toZero_train_test():
 
 # 【linear-单目标-CoDE】和【linear-多目标-FPA-nonz-NSGA2-DE-toZero】的对比
 def run_sm_fpa_nonz_CoDE_NSGA2_DE_toZero_train():
-    single_path = '../../results/linear/' + '单目标优化_CoDE' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/train/'
+    single_path = '../results/linear/' + '单目标优化_CoDE' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/train/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 
 def run_sm_fpa_nonz_CoDE_NSGA2_DE_toZero_test():
-    single_path = '../../results/linear/' + '单目标优化_CoDE' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/test/'
+    single_path = '../results/linear/' + '单目标优化_CoDE' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/test/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/test/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 
 def run_sm_fpa_nonz_CoDE_NSGA2_DE_toZero_train_test():
-    single_path = '../../results/linear/' + '单目标优化_CoDE/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero/'
+    single_path = '../results/linear/' + '单目标优化_CoDE/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train-test/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_CoDEvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -662,32 +662,32 @@ def run_sm_fpa_nonz_CoDE_NSGA2_DE_toZero_train_test():
 
 # 【linear-单目标-DE_rand_1_bin】和【linear-多目标-FPA-AAE-NSGA2】的对比
 def run_sm_fpa_aae_rand_1_bin_NSGA2_train():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_AAE_NSGA2' + '/train/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_AAE_NSGA2' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_aae_rand_1_bin_NSGA2_test():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_AAE_NSGA2' + '/test/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_AAE_NSGA2' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_aae_rand_1_bin_NSGA2_train_test():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_AAE_NSGA2' + '/train-test/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_AAE_NSGA2' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -695,32 +695,32 @@ def run_sm_fpa_aae_rand_1_bin_NSGA2_train_test():
 
 # 【linear-单目标-CoDE】和【linear-多目标-FPA-nonz-NSGA2-toZero】的对比
 def run_sm_fpa_nonz_rand_1_bin_NSGA2_toZero_train():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/train/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/train/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_toZero' + '/train/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_toZero' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_nonz_rand_1_bin_NSGA2_toZero_test():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/test/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/test/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_toZero' + '/test/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_toZero' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_nonz_rand_1_bin_NSGA2_toZero_train_test():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_toZero' + '/train-test/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_toZero' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -728,34 +728,34 @@ def run_sm_fpa_nonz_rand_1_bin_NSGA2_toZero_train_test():
 
 # 【linear-单目标-CoDE】和【linear-多目标-FPA-nonz-NSGA2-DE-toZero】的对比
 def run_sm_fpa_nonz_rand_1_bin_NSGA2_DE_toZero_train():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/train/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/train/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 
 def run_sm_fpa_nonz_rand_1_bin_NSGA2_DE_toZero_test():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/test/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/test/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/CoDE/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/test/'
+    single_name = 'singleObject/linear/CoDE/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 
 def run_sm_fpa_nonz_rand_1_bin_NSGA2_DE_toZero_train_test():
-    single_path = '../../results/linear/' + '单目标优化_rand_1_bin/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero/'
+    single_path = '../results/linear/' + '单目标优化_rand_1_bin/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero/'
     parameters = [0, 2]
-    single_name = 'single-objective/linear/rand_1_bin/FPA'
-    multi_name = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train-test/'
+    single_name = 'singleObject/linear/rand_1_bin/FPA'
+    multi_name = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '单目标_rand_1_binvs多目标_FPA_nonz_NSGA2_DE_toZero' + '/train-test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -771,22 +771,22 @@ def run_sm_fpa_nonz_rand_1_bin_NSGA2_DE_toZero_train_test():
 '''
 
 def run_sm_fpa_aae_rand1_train():
-    single_path = '../../results/' + '单目标优化算法1' + '/train/'
-    multi_path = '../../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]' + '/train/'
+    single_path = '../results/' + '单目标优化算法1' + '/train/'
+    multi_path = '../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]' + '/train/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/rand/1/bin'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE/'
-    save_path = '../../results/plotting/' + '单目标vs多目标_FPA_AAE' + '/train/'
+    single_name = 'singleObject/linear/rand/1/bin'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE/'
+    save_path = '../results/plotting/' + '单目标vs多目标_FPA_AAE' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 def run_sm_fpa_aae_rand1_test():
-    single_path = '../../results/' + '单目标优化算法1' + '/test/'
-    multi_path = '../../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]' + '/test/'
+    single_path = '../results/' + '单目标优化算法1' + '/test/'
+    multi_path = '../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]' + '/test/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/rand/1/bin'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE/'
-    save_path = '../../results/plotting/' + '单目标vs多目标_FPA_AAE_rand_1_bin' + '/test/'
+    single_name = 'singleObject/linear/rand/1/bin'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE/'
+    save_path = '../results/plotting/' + '单目标vs多目标_FPA_AAE_rand_1_bin' + '/test/'
     helpers.comparison_sm_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -794,23 +794,23 @@ def run_sm_fpa_aae_rand1_test():
 
 
 def run_sm_fpa_aae_CoDE_train():
-    single_path = '../../results/' + '单目标优化__NIND=100__MAX_GEN=100__CoDE_决策变量范围_[-20,20]' + '/train/'
-    multi_path = '../../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]' + '/train/'
+    single_path = '../results/' + '单目标优化__NIND=100__MAX_GEN=100__CoDE_决策变量范围_[-20,20]' + '/train/'
+    multi_path = '../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]' + '/train/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/CoDE/FPA+AAE'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE/'
-    save_path = '../../results/plotting/' + '单目标vs多目标_FPA_AAE_CoDE' + '/train/'
+    single_name = 'singleObject/linear/CoDE/FPA+AAE'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE/'
+    save_path = '../results/plotting/' + '单目标vs多目标_FPA_AAE_CoDE' + '/train/'
     helpers.comparison_sm_train(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
 
 def run_sm_fpa_aae_CoDE_train_test():
-    single_path = '../../results/' + '单目标优化__NIND=100__MAX_GEN=100__CoDE_决策变量范围_[-20,20]/'
-    multi_path = '../../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]/'
+    single_path = '../results/' + '单目标优化__NIND=100__MAX_GEN=100__CoDE_决策变量范围_[-20,20]/'
+    multi_path = '../results/' + '多目标优化__FPA+AAE__NIND=100__MAX_GEN=100__NSGAII_决策变量范围_[-20,20]/'
     parameters = [0, 1]
-    single_name = 'single-objective/linear/CoDE/FPA+AAE'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE/'
-    save_path = '../../results/plotting/' + '单目标vs多目标_FPA_AAE_CoDE' + '/train_test/'
+    single_name = 'singleObject/linear/CoDE/FPA+AAE'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE/'
+    save_path = '../results/plotting/' + '单目标vs多目标_FPA_AAE_CoDE' + '/train_test/'
     helpers.comparison_sm_train_test(single_path=single_path, multi_path=multi_path,
                                 parameters=parameters, single_name=single_name, multi_name=multi_name, save_path=save_path)
 
@@ -820,35 +820,35 @@ def run_sm_fpa_aae_CoDE_train_test():
 '''
 #【linear-多目标-FPA-nonZero-NSGA2-DE-toZero】和【linear-多目标-FPA-nonZero-NSGA2-toZero】的对比
 def run_mm_fpa_nonz_NSGA2_NSGA2_DE_toZero_train():
-    path1 = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/train/'
-    path2 = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/train/'
+    path1 = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/train/'
+    path2 = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/train/'
 
     parameters = [0, 2]
-    name1 = 'multi-objective/linear//NSGA-II-toZero/FPA+nonz'
-    name2 = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '多目标_NSGA2_toZerovs多目标_NSGA2_DE_toZero_FPA_nonz' + '/train/'
+    name1 = 'multiObject/linear//NSGA-II-toZero/FPA+nonz'
+    name2 = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '多目标_NSGA2_toZerovs多目标_NSGA2_DE_toZero_FPA_nonz' + '/train/'
     helpers.comparison_mm_train(path1=path1, path2=path2, name1 = name1, name2 = name2,
                                 parameters=parameters, save_path=save_path)
 
 def run_mm_fpa_nonz_NSGA2_NSGA2_DE_toZero_test():
-    path1 = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/test/'
-    path2 = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/test/'
+    path1 = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero' + '/test/'
+    path2 = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero' + '/test/'
 
     parameters = [0, 2]
-    name1 = 'multi-objective/linear//NSGA-II-toZero/FPA+nonz'
-    name2 = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '多目标_NSGA2_toZerovs多目标_NSGA2_DE_toZero_FPA_nonz' + '/test/'
+    name1 = 'multiObject/linear//NSGA-II-toZero/FPA+nonz'
+    name2 = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '多目标_NSGA2_toZerovs多目标_NSGA2_DE_toZero_FPA_nonz' + '/test/'
     helpers.comparison_mm_test(path1=path1, path2=path2, name1 = name1, name2 = name2,
                                 parameters=parameters, save_path=save_path)
 
 def run_mm_fpa_nonz_NSGA2_NSGA2_DE_toZero_train_test():
-    path1 = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero/'
-    path2 = '../../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero/'
+    path1 = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_toZero/'
+    path2 = '../results/linear/' + '多目标优化_FPA+nonz_nsga2_DE_toZero/'
 
     parameters = [0, 2]
-    name1 = 'multi-objective/linear//NSGA-II-toZero/FPA+nonz'
-    name2 = 'multi-objective/linear/NSGA-II-DE-toZero/FPA+nonz'
-    save_path = '../../results/plotting/linear/' + '多目标_NSGA2_toZerovs多目标_NSGA2_DE_toZero_FPA_nonz' + '/train-test/'
+    name1 = 'multiObject/linear//NSGA-II-toZero/FPA+nonz'
+    name2 = 'multiObject/linear/NSGA-II-DE-toZero/FPA+nonz'
+    save_path = '../results/plotting/linear/' + '多目标_NSGA2_toZerovs多目标_NSGA2_DE_toZero_FPA_nonz' + '/train-test/'
     helpers.comparison_mm_train_test(path1=path1, path2=path2, name1 = name1, name2 = name2,
                                 parameters=[0,2], save_path=save_path)
 '''
@@ -856,40 +856,40 @@ def run_mm_fpa_nonz_NSGA2_NSGA2_DE_toZero_train_test():
 '''
 # 【linearRegression】【RidgeRegression】和【linear-多目标-FPA-AAE-NSGA2】的对比
 def run_ssm_LR_RR_fpa_aae_NSGA2_train():
-    single_path1 = '../../results/compared_algorithms/' + 'LinearRegression' + '/train/'
-    single_path2 = '../../results/compared_algorithms/' + 'RidgeRegression' + '/train/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
+    single_path1 = '../results/comparedAlgorithms/' + 'LinearRegression' + '/train/'
+    single_path2 = '../results/comparedAlgorithms/' + 'RidgeRegression' + '/train/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/train/'
     parameters = [0, 1]
     single_name1 = 'LinearRegression'
     single_name2 = 'RidgeRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'LR_RR_多目标_FPA_AAE_NSGA2' + '/train/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'LR_RR_多目标_FPA_AAE_NSGA2' + '/train/'
     comparison_algorithm.comparison_ssm_train(single_path1=single_path1, single_path2 = single_path2, multi_path=multi_path,
                                 parameters=parameters, single_name1=single_name1, single_name2 = single_name2,
                                  multi_name=multi_name, save_path=save_path)
 
 def run_ssm_LR_RR_fpa_aae_NSGA2_test():
-    single_path1 = '../../results/compared_algorithms/' + 'LinearRegression' + '/test/'
-    single_path2 = '../../results/compared_algorithms/' + 'RidgeRegression' + '/test/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
+    single_path1 = '../results/comparedAlgorithms/' + 'LinearRegression' + '/test/'
+    single_path2 = '../results/comparedAlgorithms/' + 'RidgeRegression' + '/test/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2' + '/test/'
     parameters = [0, 1]
     single_name1 = 'LinearRegression'
     single_name2 = 'RidgeRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'LR_RR_多目标_FPA_AAE_NSGA2' + '/test/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'LR_RR_多目标_FPA_AAE_NSGA2' + '/test/'
     comparison_algorithm.comparison_ssm_test(single_path1=single_path1, single_path2 = single_path2, multi_path=multi_path,
                                 parameters=parameters, single_name1=single_name1, single_name2 = single_name2,
                                 multi_name=multi_name, save_path=save_path)
 
 def run_ssm_LR_RR_fpa_aae_NSGA2_train_test():
-    single_path1 = '../../results/compared_algorithms/' + 'LinearRegression/'
-    single_path2 = '../../results/compared_algorithms/' + 'RidgeRegression/'
-    multi_path = '../../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
+    single_path1 = '../results/comparedAlgorithms/' + 'LinearRegression/'
+    single_path2 = '../results/comparedAlgorithms/' + 'RidgeRegression/'
+    multi_path = '../results/linear/' + '多目标优化_FPA+AAE_NSGA2/'
     parameters = [0, 1]
     single_name1 = 'LinearRegression'
     single_name2 = 'RidgeRegression'
-    multi_name = 'multi-objective/linear/NSGA-II/FPA+AAE'
-    save_path = '../../results/plotting/sklearn/' + 'LR_RR_多目标_FPA_AAE_NSGA2' + '/train-test/'
+    multi_name = 'multiObject/linear/NSGA-II/FPA+AAE'
+    save_path = '../results/plotting/sklearn/' + 'LR_RR_多目标_FPA_AAE_NSGA2' + '/train-test/'
     comparison_algorithm.comparison_ssm_train_test(single_path1=single_path1, single_path2=single_path2, multi_path=multi_path,
                                 parameters=parameters, single_name1=single_name1, single_name2=single_name2,
                                       multi_name=multi_name, save_path=save_path)

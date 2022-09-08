@@ -8,7 +8,7 @@ def get_moea_name(moea):
 
 
 def get_sklearn_name(num):
-    algorithm_dict = {1: 'LinearRegression', 2: 'RidgeCV', 3: 'RidgeRegression', 4:'LassoLarsCV', 5:'MLPRegressor',
+    algorithm_dict = {1: 'LinearRegression', 2: 'RidgeGCV', 3: 'RidgeRegression', 4:'LassoLarsCV', 5:'MLPRegressor',
                       6:'RandomForestRegressor'}
     return algorithm_dict[num]
 
@@ -50,16 +50,18 @@ def get_target_composition(target):
 
 def get_filelists():
     fileLists = []
-    fileLists.append(['ant', 'ant-1.3', 'ant-1.4', 'ant-1.5', 'ant-1.6', 'ant-1.7'])
-    fileLists.append(['camel', 'camel-1.0', 'camel-1.2', 'camel-1.4', 'camel-1.6'])
-    fileLists.append(['ivy', 'ivy-1.1', 'ivy-1.4', 'ivy-2.0'])
-    fileLists.append(['jedit', 'jedit-3.2', 'jedit-4.0', 'jedit-4.1', 'jedit-4.2', 'jedit-4.3'])
-    fileLists.append(['log4j', 'log4j-1.0', 'log4j-1.1', 'log4j-1.2'])
-    fileLists.append(['lucene', 'lucene-2.0', 'lucene-2.2', 'lucene-2.4'])
-    fileLists.append(['poi', 'poi-1.5', 'poi-2.0', 'poi-2.5', 'poi-3.0'])
-    fileLists.append(['synapse', 'synapse-1.0', 'synapse-1.1', 'synapse-1.2'])
-    fileLists.append(['velocity', 'velocity-1.4', 'velocity-1.5', 'velocity-1.6'])
-    fileLists.append(['xalan', 'xalan-2.4', 'xalan-2.5', 'xalan-2.6', 'xalan-2.7'])
-    fileLists.append(['xerces', 'xerces-init', 'xerces-1.2', 'xerces-1.3', 'xerces-1.4'])
+    # fileLists.append(['ant', 'ant-1.3', 'ant-1.4', 'ant-1.5', 'ant-1.6', 'ant-1.7'])
+    fileLists.append(['ant', 'ant-1.3', 'ant-1.4'])
+    # fileLists.append(['camel', 'camel-1.0', 'camel-1.2'])
+    # fileLists.append(['camel', 'camel-1.0', 'camel-1.2', 'camel-1.4', 'camel-1.6'])
+    # fileLists.append(['ivy', 'ivy-1.1', 'ivy-1.4', 'ivy-2.0'])
+    # fileLists.append(['jedit', 'jedit-3.2', 'jedit-4.0', 'jedit-4.1', 'jedit-4.2', 'jedit-4.3'])
+    # fileLists.append(['log4j', 'log4j-1.0', 'log4j-1.1', 'log4j-1.2'])
+    # fileLists.append(['lucene', 'lucene-2.0', 'lucene-2.2', 'lucene-2.4'])
+    # fileLists.append(['poi', 'poi-1.5', 'poi-2.0', 'poi-2.5', 'poi-3.0'])
+    # fileLists.append(['synapse', 'synapse-1.0', 'synapse-1.1', 'synapse-1.2'])
+    # fileLists.append(['velocity', 'velocity-1.4', 'velocity-1.5', 'velocity-1.6'])
+    # fileLists.append(['xalan', 'xalan-2.4', 'xalan-2.5', 'xalan-2.6', 'xalan-2.7'])
+    # fileLists.append(['xerces', 'xerces-init', 'xerces-1.2', 'xerces-1.3', 'xerces-1.4'])
     return fileLists
 

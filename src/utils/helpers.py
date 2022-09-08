@@ -544,6 +544,7 @@ def test_model(folder_name, predict_model, type):
                 f4 = tgf.l1_values(best_param)
                 f5 = tgf.MSE(predValue, y)
                 doc1.append([fileLists[i][j + 1], f1, f2, f3, f4, f5])
+    # os.makedirs(save_path, exist_ok=True)
     if type == 1:
         with open(save_path + 'doc1.csv', 'w', newline='') as file1:
             writer1 = csv.writer(file1)
@@ -1546,7 +1547,185 @@ def comparison_difcolor_ssmm_test(single_paths, multi_paths, parameters, single_
         1---AAE
         2---numOfnonZero
 '''
+def comparison_ssmm_train(single_paths, multi_paths, parameters, single_names, multi_names, save_path):
+    para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
+    color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
+                  7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
+    # 需要注意的是，恰好再测试集和数据集时，记录最优的模型对应的性能都是doc1文件。
 
+    # 设置单目标，多目标训练集测试集的读取路径
+    single_train_paths = []
+
+    for single_path in single_paths:
+        single_train_paths.append(single_path)
+
+
+    multi_train_paths = []
+
+    for multi_path in multi_paths:
+        multi_train_paths.append(multi_path)
+
+    # 首先读取单目标的训练集和测试集文件
+    single_train_files = []
+    for single_train_path in single_train_paths:
+        single_train_files.append(pd.read_csv(single_train_path + 'doc1.csv', header=0, index_col=0))
+
+
+    # 读取多目标的训练集的文件
+    multi_train_files = []
+    for multi_train_path in multi_train_paths:
+        multi_train_files.append(get_m_files(multi_train_path, parameters))
+
+    if len(parameters) == 2:
+        multi_train_readers1 = []
+        multi_train_readers2 = []
+
+        # readers1 记录的是维度1, 算法个数 *文件个数 * 值
+        # readers2 记录的是维度2，算法个数 *文件个数 * 值
+        for multi_train_file in multi_train_files:
+            multi_train_readers1.append(csv.reader(multi_train_file[0]))
+            multi_train_readers2.append(csv.reader(multi_train_file[1]))
+
+        # mdatas1 记录的是维度1 算法个数 *文件个数 * 值
+        train_mdatas1 = []
+        # ndatas2 记录的是维度2 算法个数 *文件个数 * 值
+        train_mdatas2 = []
+        for reader in zip(multi_train_readers1, multi_train_readers2):
+            train_mdatas1.append(list(reader[0]))
+            train_mdatas2.append(list(reader[1]))
+
+        for i in range(len(train_mdatas1[0])):
+            for t in range(len(train_mdatas1)):
+                assert train_mdatas1[t][i][0] == train_mdatas2[0][i][0]
+            # 读取多目标的测试集-------首先查看是否存在该测试集，不存在的不需要画图, 则跳过
+
+            # 绘图基本设置
+            plt.figure(figsize=(8, 4))
+            plt.xlabel(para_name[parameters[0]])
+            plt.ylabel(para_name[parameters[1]])
+            color = 0
+
+            # 绘制多目标-训练集
+
+            for mdata1, mdata2, multi_name in zip(train_mdatas1, train_mdatas2, multi_names):
+                m_x = list(map(lambda x: float(x), mdata1[i][1:]))
+                m_y = list(map(lambda x: float(x), mdata2[i][1:]))
+                plt.scatter(m_x, m_y, color=color_dict[color], label=multi_name + '/train')
+                color += 1
+            # 绘制单目标-训练集
+
+            for single_train_file, single_name in zip(single_train_files, single_names):
+                single_train_values = single_train_file.loc[train_mdatas1[0][i][0]].values.astype('float64').tolist()
+                plt.scatter(single_train_values[parameters[0]], single_train_values[parameters[1]],
+                            color=color_dict[color], label=single_name + '/train')
+                color += 1
+            plt.legend()
+            os.makedirs(save_path, exist_ok=True)
+            plt.savefig(save_path + train_mdatas1[0][i][0] + '.png')
+            plt.close()
+    elif len(parameters) == 3:
+        print('three parameters functions not be completed!!')
+    else:
+        print('很奇怪！！！！！')
+
+def comparison_ssmm_test(single_paths, multi_paths, parameters, single_names, multi_names, save_path):
+    para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
+    color_dict = {0: '#FF0000', 1: '#008000', 2: '#0000FF', 3: '#FFFF00', 4: '#FFA500', 5: '#800080', 6: '#EE82EE',
+                  7: '#000000', 8: '#FF1493', 9: '#CD853F', 10: '#00FF00', 11: '#00008B', 12: '#FF6347'}
+    # 需要注意的是，恰好再测试集和数据集时，记录最优的模型对应的性能都是doc1文件。
+
+    # 设置单目标，多目标训练集测试集的读取路径
+    single_train_paths = []
+    single_test_paths = []
+
+    for single_path in single_paths:
+        single_train_paths.append(single_path + 'train/')
+        single_test_paths.append(single_path + 'test/')
+
+    multi_train_paths = []
+    multi_test_paths = []
+
+    for multi_path in multi_paths:
+        multi_train_paths.append(multi_path + 'train/')
+        multi_test_paths.append(multi_path + 'test/')
+
+    # 首先读取单目标的训练集和测试集文件
+    single_train_files = []
+    for single_train_path in single_train_paths:
+        single_train_files.append(pd.read_csv(single_train_path + 'doc1.csv', header=0, index_col=0))
+    single_test_files = []
+    for single_test_path in single_test_paths:
+        single_test_files.append(pd.read_csv(single_test_path + 'doc1.csv', header=0, index_col=0))
+
+    # 读取多目标的训练集的文件
+    multi_train_files = []
+    for multi_train_path in multi_train_paths:
+        multi_train_files.append(get_m_files(multi_train_path, parameters))
+
+    if len(parameters) == 2:
+        multi_train_readers1 = []
+        multi_train_readers2 = []
+
+        # readers1 记录的是维度1, 算法个数 *文件个数 * 值
+        # readers2 记录的是维度2，算法个数 *文件个数 * 值
+        for multi_train_file in multi_train_files:
+            multi_train_readers1.append(csv.reader(multi_train_file[0]))
+            multi_train_readers2.append(csv.reader(multi_train_file[1]))
+
+        # mdatas1 记录的是维度1 算法个数 *文件个数 * 值
+        train_mdatas1 = []
+        # ndatas2 记录的是维度2 算法个数 *文件个数 * 值
+        train_mdatas2 = []
+        for reader in zip(multi_train_readers1, multi_train_readers2):
+            train_mdatas1.append(list(reader[0]))
+            train_mdatas2.append(list(reader[1]))
+
+        for i in range(len(train_mdatas1[0])):
+            for t in range(len(train_mdatas1)):
+                assert train_mdatas1[t][i][0] == train_mdatas2[0][i][0]
+            # 读取多目标的测试集-------首先查看是否存在该测试集，不存在的不需要画图, 则跳过
+            if not Path(multi_test_paths[0] + train_mdatas1[0][i][0] + '.csv').exists():
+                continue
+
+        test_mfiles = []
+        for multi_test_path in multi_test_paths:
+            test_mfiles.append(pd.read_csv(multi_test_path +
+                                            train_mdatas1[0][i][0] + '.csv', header=1, index_col=1))
+
+        # 绘图基本设置
+        plt.figure(figsize=(8, 4))
+        plt.xlabel(para_name[parameters[0]])
+        plt.ylabel(para_name[parameters[1]])
+        color = 0
+
+        # 绘制多目标-训练集
+
+
+        # 绘制多目标-测试集
+        for test_mfile, multi_name in zip(test_mfiles, multi_names):
+            plt.scatter(test_mfile[para_name[parameters[0]]].values, test_mfile[para_name[parameters[1]]].values,
+                        color=color_dict[color], label=multi_name + '/test')
+            color += 1
+
+        # 绘制单目标-训练集
+
+        # 绘制单目标-测试集
+        for single_test_file, single_name in zip(single_test_files, single_names):
+            if single_name == 'CoDE':
+                single_name = 'learning-to-rank'
+            plt.scatter(single_test_file.loc[train_mdatas1[0][i][0], para_name[parameters[0]]],
+                        single_test_file.loc[train_mdatas1[0][i][0], para_name[parameters[1]]],
+                        color=color_dict[color], label=single_name + '/test')
+            color += 1
+
+        plt.legend()
+        os.makedirs(save_path, exist_ok=True)
+        plt.savefig(save_path + train_mdatas1[0][i][0] + '.png')
+        plt.close()
+    elif len(parameters) == 3:
+        print('three parameters functions not be completed!!')
+    else:
+        print('很奇怪！！！！！')
 
 def comparison_ssmm_train_test(single_paths, multi_paths, parameters, single_names, multi_names, save_path):
     para_name = {0: 'FPA', 1: 'AAE', 2: 'numOfnonZero', 3: 'L1', 4: 'MSE'}
@@ -1612,46 +1791,46 @@ def comparison_ssmm_train_test(single_paths, multi_paths, parameters, single_nam
                 test_mfiles.append(pd.read_csv(multi_test_path +
                                                train_mdatas1[0][i][0] + '.csv', header=1, index_col=1))
 
-            # 绘图基本设置
-            plt.figure(figsize=(8, 4))
-            plt.xlabel(para_name[parameters[0]])
-            plt.ylabel(para_name[parameters[1]])
-            color = 0
+        # 绘图基本设置
+        plt.figure(figsize=(8, 4))
+        plt.xlabel(para_name[parameters[0]])
+        plt.ylabel(para_name[parameters[1]])
+        color = 0
 
-            # 绘制多目标-训练集
+        # 绘制多目标-训练集
 
-            for mdata1, mdata2, multi_name in zip(train_mdatas1, train_mdatas2, multi_names):
-                m_x = list(map(lambda x: float(x), mdata1[i][1:]))
-                m_y = list(map(lambda x: float(x), mdata2[i][1:]))
-                plt.scatter(m_x, m_y, color=color_dict[color], label=multi_name + '/train')
-                color += 1
+        for mdata1, mdata2, multi_name in zip(train_mdatas1, train_mdatas2, multi_names):
+            m_x = list(map(lambda x: float(x), mdata1[i][1:]))
+            m_y = list(map(lambda x: float(x), mdata2[i][1:]))
+            plt.scatter(m_x, m_y, color=color_dict[color], label=multi_name + '/train')
+            color += 1
 
             # 绘制多目标-测试集
-            for test_mfile, multi_name in zip(test_mfiles, multi_names):
-                plt.scatter(test_mfile[para_name[parameters[0]]].values, test_mfile[para_name[parameters[1]]].values,
+        for test_mfile, multi_name in zip(test_mfiles, multi_names):
+            plt.scatter(test_mfile[para_name[parameters[0]]].values, test_mfile[para_name[parameters[1]]].values,
                             color=color_dict[color], label=multi_name + '/test')
-                color += 1
+            color += 1
 
             # 绘制单目标-训练集
 
-            for single_train_file, single_name in zip(single_train_files, single_names):
-                single_train_values = single_train_file.loc[train_mdatas1[0][i][0]].values.astype('float64').tolist()
-                plt.scatter(single_train_values[parameters[0]], single_train_values[parameters[1]],
+        for single_train_file, single_name in zip(single_train_files, single_names):
+            single_train_values = single_train_file.loc[train_mdatas1[0][i][0]].values.astype('float64').tolist()
+            plt.scatter(single_train_values[parameters[0]], single_train_values[parameters[1]],
                             color=color_dict[color], label=single_name + '/train')
-                color += 1
+            color += 1
 
             # 绘制单目标-测试集
-            for single_test_file, single_name in zip(single_test_files, single_names):
-                if single_name == 'CoDE':
-                    single_name = 'learning-to-rank'
-                plt.scatter(single_test_file.loc[train_mdatas1[0][i][0], para_name[parameters[0]]],
+        for single_test_file, single_name in zip(single_test_files, single_names):
+            if single_name == 'CoDE':
+                single_name = 'learning-to-rank'
+            plt.scatter(single_test_file.loc[train_mdatas1[0][i][0], para_name[parameters[0]]],
                             single_test_file.loc[train_mdatas1[0][i][0], para_name[parameters[1]]],
                             color=color_dict[color], label=single_name + '/test')
 
-            plt.legend()
-            os.makedirs(save_path, exist_ok=True)
-            plt.savefig(save_path + train_mdatas1[0][i][0] + '.png')
-            plt.close()
+        plt.legend()
+        os.makedirs(save_path, exist_ok=True)
+        plt.savefig(save_path + train_mdatas1[0][i][0] + '.png')
+        plt.close()
     elif len(parameters) == 3:
         print('three parameters functions not be completed!!')
     else:
